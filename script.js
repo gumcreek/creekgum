@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (svg) {
     const word = 'LOGAN';
-    const spacing = 245;
+    const spacing = 265;
     const viewBoxWidth = 1800;
     const totalWidth = spacing * (word.length - 1);
     const startX = (viewBoxWidth - totalWidth) / 2;
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
               { transform: 'translateY(0px) scaleY(1) scaleX(1)' }
             ],
             {
-              duration: 950,
+              duration: 1400,
               easing: 'cubic-bezier(.22,.8,.24,1)'
             }
           );
