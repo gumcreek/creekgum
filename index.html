@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap"
     rel="stylesheet"
   >
 
@@ -18,38 +18,43 @@
 <body>
   <div class="page">
     <header class="site-header">
-      <a class="site-title" href="/">Logan Hartmann</a>
+      <a class="site-name" href="/">Logan Hartmann</a>
 
       <nav class="site-nav">
-        <a href="#">About</a>
-        <a href="#">Writing</a>
+        <a href="#thoughts">Thoughts</a>
+        <a href="#photos">Photos</a>
+        <a href="mailto:you@example.com">Email</a>
       </nav>
     </header>
 
     <main>
       <section class="intro">
-        <p>
-          I like to think about things.
+        <p class="intro-line">
+          A quiet place for thoughts, photos, and things I want to keep track of.
         </p>
       </section>
 
-      <section class="section">
-        <div class="section-header">
-          <h2>Writing</h2>
-          <a href="#">All posts</a>
+      <section class="section" id="thoughts">
+        <div class="section-head">
+          <h2>Thoughts</h2>
         </div>
 
-        <div class="list" id="posts"></div>
+        <div class="thought-list" id="posts"></div>
       </section>
 
-    </main>
+      <section class="section" id="photos">
+        <div class="section-head">
+          <h2>Photos</h2>
+        </div>
 
-    <footer class="site-footer">
-      <span>© 2026 Logan Hartmann</span>
-      <div class="footer-links">
-        <a href="#">Email</a>
-      </div>
-    </footer>
+        <div class="photo-grid">
+          <img src="https://picsum.photos/600/750?1" alt="Photo 1">
+          <img src="https://picsum.photos/600/750?2" alt="Photo 2">
+          <img src="https://picsum.photos/600/750?3" alt="Photo 3">
+          <img src="https://picsum.photos/600/750?4" alt="Photo 4">
+        </div>
+      </section>
+    </main>
   </div>
 
   <script src="script.js"></script>
