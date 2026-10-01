@@ -68,8 +68,48 @@ letters.forEach(letter => {
 
     setTimeout(() => {
       animating = false;
-    }, 950);
+    }, 1450);
 
   });
 
 });
+
+async function loadPosts() {
+
+  const response = await fetch('posts.json');
+
+  const posts = await response.json();
+
+  const container = document.getElementById('posts');
+
+  posts.forEach(post => {
+
+    const article = document.createElement('article');
+
+    article.className = 'post';
+
+    article.innerHTML = `
+      <h3>
+        <a href="#">
+          ${post.title}
+        </a>
+      </h3>
+
+      <div class="meta">
+        ${post.date}
+      </div>
+
+      <div class="tags">
+        ${post.tags.map(tag =>
+          `<a class="tag" href="#">#${tag}</a>`
+        ).join('')}
+      </div>
+    `;
+
+    container.appendChild(article);
+
+  });
+
+}
+
+loadPosts();
