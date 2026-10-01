@@ -4,7 +4,9 @@ window.addEventListener('DOMContentLoaded', () => {
   if (svg) {
     const word = 'LOGAN';
     const spacing = 245;
-    const startX = 330;
+    const viewBoxWidth = 1800;
+    const totalWidth = spacing * (word.length - 1);
+    const startX = (viewBoxWidth - totalWidth) / 2;
 
     word.split('').forEach((char, index) => {
       const letter = document.createElementNS(
@@ -15,6 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
       letter.textContent = char;
       letter.setAttribute('x', startX + index * spacing);
       letter.setAttribute('y', '420');
+      letter.setAttribute('text-anchor', 'middle');
       letter.setAttribute('class', 'logo-letter');
 
       svg.appendChild(letter);
@@ -29,20 +32,20 @@ window.addEventListener('DOMContentLoaded', () => {
           letter.animate(
             [
               { transform: 'translateY(0px) scaleY(1) scaleX(1)' },
-              { transform: 'translateY(-30px) scaleY(1.06) scaleX(0.985)' },
-              { transform: 'translateY(8px) scaleY(0.98) scaleX(1.015)' },
-              { transform: 'translateY(-10px) scaleY(1.015) scaleX(0.995)' },
+              { transform: 'translateY(-18px) scaleY(1.015) scaleX(0.997)' },
+              { transform: 'translateY(4px) scaleY(0.995) scaleX(1.002)' },
+              { transform: 'translateY(-5px) scaleY(1.005) scaleX(0.999)' },
               { transform: 'translateY(0px) scaleY(1) scaleX(1)' }
             ],
             {
-              duration: 1900,
+              duration: 950,
               easing: 'cubic-bezier(.22,.8,.24,1)'
             }
           );
 
         setTimeout(() => {
           animating = false;
-        }, 1700);
+        }, 400);
       });
     });
   }
