@@ -1,34 +1,27 @@
-const text = document.getElementById('logan-text');
+const svg = document.getElementById('logo');
 
-const letters = [];
+const word = 'LOGAN';
 
-const textContent = text.textContent;
+const spacing = 250;
 
-text.textContent = '';
+const startX = 420;
 
-[...textContent].forEach((char, i) => {
+word.split('').forEach((char, index) => {
 
-  const tspan = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "tspan"
+  const letter = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'text'
   );
 
-  tspan.textContent = char;
+  letter.textContent = char;
 
-  tspan.setAttribute(
-    'dx',
-    i === 0 ? '0' : '-18'
-  );
+  letter.setAttribute('x', startX + index * spacing);
 
-  tspan.classList.add('logo-letter');
+  letter.setAttribute('y', '360');
 
-  text.appendChild(tspan);
+  letter.setAttribute('class', 'logo-letter');
 
-  letters.push(tspan);
-
-});
-
-letters.forEach(letter => {
+  svg.appendChild(letter);
 
   let animating = false;
 
