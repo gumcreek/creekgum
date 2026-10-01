@@ -10,13 +10,15 @@ async function loadPosts() {
 
     posts.forEach(post => {
       const item = document.createElement('a');
-      item.className = 'post-item';
+      item.className = 'list-item';
       item.href = post.url || '#';
 
       item.innerHTML = `
-        <h3>${post.title}</h3>
-        <p>${post.description || ''}</p>
-        <div class="post-meta">${post.date || ''}</div>
+        <div class="item-main">
+          <span class="item-title">${post.title}</span>
+          <span class="item-description">${post.description || ''}</span>
+          <span class="post-meta">${post.date || ''}</span>
+        </div>
       `;
 
       container.appendChild(item);
