@@ -28,21 +28,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
         letter.animate(
           [
-            { transform: 'translateY(0px) scaleY(1)' },
-            { transform: 'translateY(-26px) scaleY(1.06)' },
-            { transform: 'translateY(10px) scaleY(0.97)' },
-            { transform: 'translateY(-8px) scaleY(1.015)' },
-            { transform: 'translateY(0px) scaleY(1)' }
+            { transform: 'translateY(0px) scaleY(1) scaleX(1)' },
+            { transform: 'translateY(-24px) scaleY(1.05) scaleX(0.99)' },
+            { transform: 'translateY(6px) scaleY(0.985) scaleX(1.01)' },
+            { transform: 'translateY(-8px) scaleY(1.01) scaleX(0.995)' },
+            { transform: 'translateY(0px) scaleY(1) scaleX(1)' }
           ],
           {
-            duration: 1450,
-            easing: 'cubic-bezier(.16,1,.3,1)'
+            duration: 1800,
+            easing: 'cubic-bezier(.22,.8,.24,1)'
           }
         );
 
         setTimeout(() => {
           animating = false;
-        }, 1450);
+        }, 1700);
       });
     });
   }
