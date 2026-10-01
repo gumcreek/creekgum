@@ -1,12 +1,12 @@
 :root {
-  --bg: #f4f1ea;
-  --text: #1b1b1b;
-  --muted: #6f685f;
-  --accent: #9a5374;
-  --hover: rgba(154, 83, 116, 0.06);
+  --bg: #ddebd7;
+  --text: #1d241f;
+  --body: #566258;
+  --muted: #6f7a70;
+  --accent: #a0587c;
+  --hover: rgba(160, 88, 124, 0.06);
 
-  --font-ui: "Azeret Mono", monospace;
-  --font-body: "Source Serif 4", serif;
+  --font: "IBM Plex Sans", sans-serif;
 }
 
 * {
@@ -21,14 +21,14 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-body);
-  line-height: 1.65;
+  font-family: var(--font);
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
-  text-decoration-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--accent) 65%, transparent);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
@@ -40,36 +40,35 @@ a {
 }
 
 .site-header {
-  margin-bottom: 4.5rem;
+  margin-bottom: 4rem;
 }
 
 .site-name {
   text-decoration: none;
-  font-family: var(--font-ui);
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .intro {
-  margin-bottom: 3.5rem;
-  max-width: 40rem;
+  margin-bottom: 3rem;
+  max-width: 38rem;
 }
 
 .intro-line {
   margin: 0;
-  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
-  line-height: 1.12;
-  letter-spacing: -0.03em;
+  font-size: 1rem;
   font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .section {
-  margin-top: 3rem;
+  margin-top: 2.75rem;
 }
 
 .section-head {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -78,33 +77,30 @@ a {
 
 .section-head h2 {
   margin: 0;
-  font-family: var(--font-ui);
-  font-size: 0.78rem;
+  font-size: 0.98rem;
   font-weight: 600;
-  color: var(--muted);
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .section-head a {
   color: var(--muted);
-  font-family: var(--font-ui);
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   text-decoration: none;
 }
 
 .thought-list {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.15rem;
 }
 
 .thought-item {
   display: block;
-  padding: 0.6rem 0.75rem;
+  padding: 0.65rem 0.75rem;
   margin: 0 -0.75rem;
   text-decoration: none;
-  border-radius: 6px;
-  transition: background-color 0.28s ease;
+  border-radius: 8px;
+  transition: background-color 0.32s ease;
 }
 
 .thought-item:hover {
@@ -113,17 +109,18 @@ a {
 
 .thought-title {
   display: block;
-  font-size: 1.08rem;
-  line-height: 1.3;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .thought-meta {
   display: block;
   margin-top: 0.15rem;
   color: var(--muted);
-  font-family: var(--font-ui);
-  font-size: 0.75rem;
-  letter-spacing: 0.01em;
+  font-size: 0.92rem;
+  font-weight: 400;
 }
 
 .post-page {
@@ -131,15 +128,20 @@ a {
 }
 
 .post-title {
-  margin: 0.5rem 0 1.5rem;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  font-weight: 400;
+  margin: 0.35rem 0 1.25rem;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.post-body {
+  color: var(--body);
 }
 
 .post-body p {
-  margin: 1.25rem 0;
+  margin: 1.15rem 0;
 }
 
 @media (max-width: 700px) {
@@ -148,7 +150,7 @@ a {
   }
 
   .site-header {
-    margin-bottom: 3.5rem;
+    margin-bottom: 3rem;
   }
 
   .section-head {
