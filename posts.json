@@ -1,7 +1,8 @@
 [
   {
     "title": "First post",
-    "date": "10.01.2026",
-    "tags": ["design", "web"]
+    "date": "10.01.2026"
+    "url": "posts/first-post.html",
+    "type": "writing"
   }
 ]
