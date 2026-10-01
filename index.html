@@ -146,11 +146,20 @@
       transform-origin: center;
     
       transform:
-        scaleY(1.15)
-        perspective(1000px)
-        rotateX(18deg);
+        matrix(
+          1,
+          0,
+          -0.18,
+          1,
+          0,
+          0
+        )
+        scale(1,1.15);
     
       cursor: default;
+    }
+    .logo-letter {
+      pointer-events: auto;
     }
     .section {
       margin-block: 5rem;
@@ -315,8 +324,6 @@
     
     </section>
 
-    </section>
-
     <section class="section">
 
       <div class="section-header">
@@ -434,7 +441,7 @@
   
     tspan.setAttribute(
       'dx',
-      i === 0 ? '0' : '-40'
+      i === 0 ? '0' : '-55'
     );
   
     tspan.classList.add('logo-letter');
