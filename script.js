@@ -8,7 +8,9 @@ async function loadPosts() {
 
     if (!container) return;
 
-    posts.slice(0, 5).forEach(post => {
+    const writingPosts = posts.filter(post => post.type === 'writing');
+
+    writingPosts.slice(0, 5).forEach(post => {
       const item = document.createElement('a');
       item.className = 'thought-item';
       item.href = post.url || '#';
