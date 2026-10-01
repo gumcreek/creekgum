@@ -1,10 +1,11 @@
 :root {
-  --bg: #d9f7be;
-  --text: #1f2937;
-  --muted: #5b6472;
-  --border: #b7d9bb;
-  --pink: #ff3ea5;
-  --font: "Cascadia Mono", monospace;
+  --bg: #f3f3f1;
+  --text: #111111;
+  --muted: #666666;
+  --border: #dddddd;
+  --hover: #ecebe8;
+
+  --font: "Inter", sans-serif;
 }
 
 * {
@@ -20,205 +21,105 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  line-height: 1.8;
-  letter-spacing: -0.03em;
-  min-height: 100vh;
-  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
-  text-decoration-color: var(--pink);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-
-  transition:
-    text-underline-offset .2s ease,
-    opacity .2s ease;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
 }
 
-a:hover {
-  text-underline-offset: 7px;
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
 }
 
-.container {
-  width: min(1200px, calc(100% - 2rem));
-  margin-inline: auto;
-}
-
-header {
-  padding: 1.5rem 0;
-}
-
-.nav {
+.site-header {
+  margin-bottom: 6rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.nav-links {
-  display: flex;
-  gap: 2rem;
-
-  list-style: none;
-
-  padding: 0;
-  margin: 0;
-}
-
-.nav-links a {
+.site-name {
+  font-size: 1rem;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: 700;
-  font-size: .95rem;
 }
 
-.hero {
-  display: flex;
-  justify-content: center;
-
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-
-  overflow: visible;
-}
-
-#logo {
-  width: min(78vw, 1200px);
-
-  overflow: visible;
-
-  display: block;
-}
-
-.logo-letter {
-  fill: #ff3ea5;
-
-  font-family:
-    "Arial Black",
-    sans-serif;
-
-  font-size: 420px;
-
-  font-weight: 900;
-
-  letter-spacing: 0.04em;
-
-  cursor: default;
-
-  pointer-events: auto;
-
-  user-select: none;
+.site-role {
+  margin: 0.125rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
 }
 
 .section {
-  margin-block: 5rem;
+  margin-top: 4rem;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  gap: 1rem;
-
-  margin-bottom: 2rem;
+.section-label {
+  margin: 0 0 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.section-title {
+.lede {
   margin: 0;
-
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-
-  line-height: 1;
+  font-size: 1.05rem;
+  color: var(--text);
 }
 
-.timeline {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.post {
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 1.5rem;
-}
-
-.post h3 {
-  margin: 0 0 .5rem;
-
-  font-size: 1.25rem;
-
-  line-height: 1.3;
-}
-
-.meta {
+.body-text {
+  margin-top: 1rem;
   color: var(--muted);
-  font-size: .95rem;
 }
 
-.tags {
+.list {
   display: flex;
-  flex-wrap: wrap;
-
-  gap: .5rem;
-
-  margin-top: .75rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.tag {
-  border: 1px solid var(--border);
+.list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 
-  padding: .2rem .7rem;
+  margin-inline: -0.75rem;
+  padding: 0.75rem;
 
-  border-radius: 999px;
-
-  font-size: .85rem;
-
+  border-radius: 10px;
   text-decoration: none;
 
-  background: rgba(255,255,255,.35);
+  transition: background 0.2s ease;
 }
 
-footer {
-  margin-top: 6rem;
-
-  padding: 3rem 0;
-
-  border-top: 1px solid var(--border);
+.list-item:hover {
+  background: var(--hover);
 }
 
-.footer-grid {
-  display: flex;
-  justify-content: space-between;
-
-  flex-wrap: wrap;
-
-  gap: 2rem;
+.item-title {
+  font-weight: 500;
+  color: var(--text);
 }
 
-.footer-links {
-  list-style: none;
-
-  padding: 0;
-  margin: 0;
-
-  display: grid;
-
-  gap: .5rem;
+.item-description {
+  color: var(--muted);
 }
 
-@media (max-width: 700px) {
-
-  .nav-links {
-    gap: 1rem;
+@media (max-width: 640px) {
+  .page {
+    padding: 2rem 1.25rem 4rem;
   }
 
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .site-header {
+    margin-bottom: 4rem;
   }
 
-  .hero {
-    margin-bottom: 3rem;
+  .section {
+    margin-top: 3rem;
   }
-
 }
