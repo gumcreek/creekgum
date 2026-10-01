@@ -121,27 +121,29 @@
     }
     
     #logo {
-      width: min(96vw, 1900px);
+      width: min(92vw, 1500px);
     
       overflow: visible;
     
       display: block;
     }
     
-    #logan-text {
+   #logan-text {
       fill: #ff3ea5;
     
       font-family:
-        Impact,
-        Haettenschweiler,
-        "Arial Narrow Bold",
+        "Arial Black",
         sans-serif;
     
-      font-size: 540px;
+      font-size: 500px;
     
       font-weight: 900;
     
-      letter-spacing: -0.12em;
+      letter-spacing: -0.04em;
+    
+      transform: scaleX(1.08);
+    
+      transform-origin: center;
     
       cursor: default;
     }
@@ -293,7 +295,7 @@
 
       <svg
         id="logo"
-        viewBox="0 0 2400 700"
+        viewBox="0 0 1800 700"
         xmlns="http://www.w3.org/2000/svg"
       >
     
@@ -428,7 +430,7 @@
   
     tspan.setAttribute(
       'dx',
-      i === 0 ? '0' : '-55'
+      i === 0 ? '0' : '-18'
     );
   
     tspan.classList.add('logo-letter');
