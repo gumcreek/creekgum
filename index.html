@@ -112,224 +112,151 @@
 
       font-size: 1rem;
     }
-
     .hero {
-      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     
-      display: grid;
-      place-items: center;
+      padding-top: 0;
+    
+      margin-top: -2rem;
+      margin-bottom: -6rem;
+    
+      overflow: visible;
+    }
+    
+    #logo {
+      width: min(92vw, 1800px);
+    
+      height: auto;
     
       overflow: visible;
     
-      padding:
-        6rem
-        0
-        10rem;
+      display: block;
     }
-
-    #logo text {
+    
+    #logo-wrap {
+      fill: #ff2d95;
+    }
+    
+    .logo-letter {
+      fill: #ff2d95;
+    
       font-family:
-        Arial Black,
         Impact,
+        "Arial Black",
         sans-serif;
     
-      font-size: clamp(7rem, 24vw, 22rem);
+      font-size: 520px;
     
       font-weight: 900;
     
-      letter-spacing: -0.08em;
+      letter-spacing: -0.22em;
     
       text-transform: uppercase;
+    
+      cursor: default;
+    
+      transform-box: fill-box;
+      transform-origin: center;
     }
-
-    #logo:hover {
-      transform:
-        perspective(1200px)
-        rotateX(30deg)
-        scaleY(1.4)
-        skewX(-8deg)
-        translateY(-8px);
-    }
-
-    #logo text {
-      font-family:
-        Arial Black,
-        Impact,
-        sans-serif;
-
-      font-size: clamp(8rem, 26vw, 24rem);
-
-      font-weight: 900;
-
-      letter-spacing: -0.09em;
-
-      text-transform: uppercase;
-    }
-
     .section {
       margin-block: 5rem;
     }
-
+    
     .section-header {
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
+    
       gap: 1rem;
-
+    
       margin-bottom: 2rem;
     }
-
+    
     .section-title {
       margin: 0;
-
+    
       font-size: clamp(1.5rem, 4vw, 2.5rem);
-
+    
       line-height: 1;
     }
-
+    
     .timeline {
       display: grid;
-
       gap: 1.5rem;
     }
-
+    
     .post {
       border-bottom: 1px solid var(--border);
-
+    
       padding-bottom: 1.5rem;
     }
-
+    
     .post h3 {
       margin: 0 0 .5rem;
-
+    
       font-size: 1.25rem;
-
+    
       line-height: 1.3;
     }
-
+    
     .meta {
       color: var(--muted);
-
+    
       font-size: .95rem;
     }
-
+    
     .tags {
       display: flex;
-
       flex-wrap: wrap;
-
+    
       gap: .5rem;
-
+    
       margin-top: .75rem;
     }
-
+    
     .tag {
       border: 1px solid var(--border);
-
+    
       padding: .2rem .7rem;
-
+    
       border-radius: 999px;
-
+    
       font-size: .85rem;
-
+    
       text-decoration: none;
-
+    
       background: rgba(255,255,255,.35);
-
-      transition:
-        background .2s ease,
-        transform .2s ease,
-        border-color .2s ease;
     }
-
-    .tag:hover {
-      background: white;
-
-      border-color: var(--pink);
-
-      transform: translateY(-2px);
-    }
-
+    
     footer {
       margin-top: 6rem;
-
+    
       padding: 3rem 0;
-
+    
       border-top: 1px solid var(--border);
     }
-
+    
     .footer-grid {
       display: flex;
-
+    
       justify-content: space-between;
-
+    
       flex-wrap: wrap;
-
+    
       gap: 2rem;
     }
-
+    
     .footer-links {
       list-style: none;
-
+    
       padding: 0;
       margin: 0;
-
+    
       display: grid;
-
+    
       gap: .5rem;
-    }
-
-    @media (max-width: 700px) {
-
-      .nav-links {
-        gap: 1rem;
-      }
-
-      .section-header {
-        flex-direction: column;
-
-        align-items: flex-start;
-      }
-
-      #logo {
-        width: min(1800px, 92vw);
-      
-        height: auto;
-      
-        overflow: visible;
-      
-        display: block;
-      }
-      
-      #logo-wrap {
-        fill: #ff2d95;
-      }
-      
-      .logo-letter {
-        fill: #ff2d95;
-      
-        font-family:
-          Impact,
-          "Arial Black",
-          sans-serif;
-      
-        font-size: 520px;
-      
-        font-weight: 900;
-      
-        letter-spacing: -0.2em;
-      
-        text-transform: uppercase;
-      
-        cursor: default;
-      
-        transform-box: fill-box;
-        transform-origin: center;
-      }
-
     }
 
   </style>
@@ -356,7 +283,7 @@
 
       <svg
         id="logo"
-        viewBox="0 0 2600 900"
+        viewBox="0 0 2400 900"
         preserveAspectRatio="xMidYMid meet"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -364,17 +291,17 @@
         <g
           id="logo-wrap"
           transform="
-            translate(120 120)
-            skewX(-12)
-            scale(1.08,1.32)
+            translate(140 120)
+            skewX(-14)
+            scale(1.15,1.45)
           "
         >
     
           <text class="logo-letter" x="0" y="520">L</text>
-          <text class="logo-letter" x="320" y="520">O</text>
-          <text class="logo-letter" x="690" y="520">G</text>
-          <text class="logo-letter" x="1050" y="520">A</text>
-          <text class="logo-letter" x="1420" y="520">N</text>
+          <text class="logo-letter" x="260" y="520">O</text>
+          <text class="logo-letter" x="560" y="520">G</text>
+          <text class="logo-letter" x="860" y="520">A</text>
+          <text class="logo-letter" x="1160" y="520">N</text>
     
         </g>
     
@@ -478,6 +405,42 @@
     </div>
 
   </footer>
+<script>
 
+  const letters = document.querySelectorAll('.logo-letter');
+  
+  letters.forEach(letter => {
+  
+    let animating = false;
+  
+    letter.addEventListener('mouseenter', () => {
+  
+      if (animating) return;
+  
+      animating = true;
+  
+      letter.animate(
+        [
+          { transform: 'translateY(0px)' },
+          { transform: 'translateY(-28px)' },
+          { transform: 'translateY(0px)' },
+          { transform: 'translateY(-10px)' },
+          { transform: 'translateY(0px)' }
+        ],
+        {
+          duration: 550,
+          easing: 'cubic-bezier(.34,1.56,.64,1)'
+        }
+      );
+  
+      setTimeout(() => {
+        animating = false;
+      }, 550);
+  
+    });
+  
+  });
+  
+  </script>
 </body>
 </html>
