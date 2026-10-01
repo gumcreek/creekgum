@@ -1,3 +1,73 @@
+:root {
+  --bg: #f3f1ec;
+  --text: #181818;
+  --muted: #6c675f;
+  --border: #ddd7cf;
+  --accent: #9b4b70;
+  --hover: #f6e7ee;
+
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Newsreader", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+}
+
+.page {
+  width: min(760px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 5rem;
+}
+
+.site-header {
+  margin-bottom: 5rem;
+}
+
+.site-name {
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.intro {
+  margin-bottom: 4rem;
+  max-width: 42rem;
+}
+
+.intro-line {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.section {
+  margin-top: 3rem;
+}
+
 .section-head {
   margin-bottom: 1rem;
   display: flex;
@@ -17,4 +87,56 @@
 .section-head a {
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+.thought-list {
+  display: grid;
+  gap: 0;
+}
+
+.thought-item {
+  display: block;
+  padding: 1rem 0.75rem;
+  margin: 0 -0.75rem;
+  border-top: 1px solid var(--border);
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.18s ease;
+}
+
+.thought-item:hover {
+  background: var(--hover);
+}
+
+.thought-item:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.thought-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.thought-meta {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding-top: 1.25rem;
+  }
+
+  .site-header {
+    margin-bottom: 4rem;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
