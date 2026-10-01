@@ -1,14 +1,11 @@
 :root {
-  --bg: #dff2d8;
-  --surface: rgba(255, 255, 255, 0.45);
-  --text: #142018;
-  --muted: #5e6d61;
-  --border: rgba(20, 32, 24, 0.12);
-  --accent: #e83e9c;
-  --hover: rgba(255, 255, 255, 0.65);
+  --bg: #f2f4ef;
+  --text: #111111;
+  --muted: #6a6a6a;
+  --border: #d8ddd2;
+  --hover: #e9ede5;
 
-  --font-sans: "Inter", sans-serif;
-  --font-serif: "Instrument Serif", serif;
+  --font: "Inter", sans-serif;
 }
 
 * {
@@ -19,41 +16,39 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-sans);
+  font-family: var(--font);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
-  text-decoration-color: color-mix(in srgb, var(--accent) 70%, transparent);
-  text-underline-offset: 3px;
   text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
 }
 
 .page {
-  width: min(860px, calc(100% - 2rem));
+  width: min(760px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2rem 0 5rem;
+  padding: 2rem 0 4rem;
 }
 
 .site-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
   margin-bottom: 5rem;
 }
 
-.site-name {
+.site-title {
   text-decoration: none;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .site-nav {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .site-nav a {
@@ -62,111 +57,97 @@ a {
 }
 
 .intro {
-  margin-bottom: 5rem;
-  max-width: 700px;
+  max-width: 620px;
+  margin-bottom: 4rem;
 }
 
-.eyebrow {
-  margin: 0 0 1rem;
+.intro p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+}
+
+.section {
+  margin-top: 3.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.section-header a {
+  color: var(--muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-item {
+  display: block;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+  text-decoration: none;
+}
+
+.list-item:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.item-title {
+  font-weight: 500;
+}
+
+.item-description,
+.post-meta {
+  color: var(--muted);
+}
+
+.site-footer {
+  margin-top: 5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
   color: var(--muted);
   font-size: 0.95rem;
 }
 
-.intro h1 {
-  margin: 0;
-  font-size: clamp(2.5rem, 7vw, 5rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
-  font-weight: 600;
-}
-
-.intro h1 span {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-}
-
-.intro-text {
-  margin-top: 1.5rem;
-  max-width: 42rem;
-  font-size: 1.05rem;
-  color: var(--muted);
-}
-
-.content-section {
-  margin-top: 4rem;
-}
-
-.section-heading {
+.footer-links {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
   gap: 1rem;
-  margin-bottom: 1.5rem;
 }
 
-.section-heading h2 {
-  margin: 0;
-  font-size: 1rem;
-  letter-spacing: -0.02em;
-}
-
-.post-list,
-.project-list {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.post-item,
-.project-item {
-  display: block;
-  padding: 1rem 1.1rem;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
-  text-decoration: none;
-  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
-}
-
-.post-item:hover,
-.project-item:hover {
-  transform: translateY(-2px);
-  background: var(--hover);
-  border-color: rgba(20, 32, 24, 0.18);
-}
-
-.post-item h3,
-.project-item h3 {
-  margin: 0;
-  font-size: 1rem;
-  letter-spacing: -0.02em;
-}
-
-.post-item p,
-.project-item p,
-.post-meta,
-.elsewhere-text {
-  margin: 0.35rem 0 0;
-  color: var(--muted);
-}
-
-.post-meta {
-  font-size: 0.92rem;
-}
-
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .site-header,
-  .section-heading {
+  .section-header,
+  .site-footer {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
   }
 
-  .page {
-    padding-top: 1.25rem;
-  }
-
-  .intro,
-  .content-section {
-    margin-top: 3rem;
+  .intro p {
+    font-size: 1.1rem;
   }
 }
