@@ -3,8 +3,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (svg) {
     const word = 'LOGAN';
-    const spacing = 210;
-    const startX = 380;
+    const spacing = 245;
+    const startX = 330;
 
     word.split('').forEach((char, index) => {
       const letter = document.createElementNS(
@@ -25,20 +25,20 @@ window.addEventListener('DOMContentLoaded', () => {
         if (animating) return;
 
         animating = true;
-
-        letter.animate(
-          [
-            { transform: 'translateY(0px) scaleY(1) scaleX(1)' },
-            { transform: 'translateY(-24px) scaleY(1.05) scaleX(0.99)' },
-            { transform: 'translateY(6px) scaleY(0.985) scaleX(1.01)' },
-            { transform: 'translateY(-8px) scaleY(1.01) scaleX(0.995)' },
-            { transform: 'translateY(0px) scaleY(1) scaleX(1)' }
-          ],
-          {
-            duration: 1800,
-            easing: 'cubic-bezier(.22,.8,.24,1)'
-          }
-        );
+          
+          letter.animate(
+            [
+              { transform: 'translateY(0px) scaleY(1) scaleX(1)' },
+              { transform: 'translateY(-30px) scaleY(1.06) scaleX(0.985)' },
+              { transform: 'translateY(8px) scaleY(0.98) scaleX(1.015)' },
+              { transform: 'translateY(-10px) scaleY(1.015) scaleX(0.995)' },
+              { transform: 'translateY(0px) scaleY(1) scaleX(1)' }
+            ],
+            {
+              duration: 1900,
+              easing: 'cubic-bezier(.22,.8,.24,1)'
+            }
+          );
 
         setTimeout(() => {
           animating = false;
