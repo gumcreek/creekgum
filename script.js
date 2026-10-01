@@ -8,7 +8,7 @@ async function loadPosts() {
 
     if (!container) return;
 
-    posts.forEach(post => {
+    posts.slice(0, 5).forEach(post => {
       const item = document.createElement('a');
       item.className = 'thought-item';
       item.href = post.url || '#';
