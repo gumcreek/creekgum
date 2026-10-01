@@ -125,14 +125,36 @@
       overflow: visible;
     }
     
+    .hero {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    
+      padding-top: 0;
+    
+      margin-top: -1rem;
+      margin-bottom: 4rem;
+    
+      overflow: visible;
+    }
+    
     #logo {
-      width: min(92vw, 1800px);
+      width: min(95vw, 1800px);
     
       height: auto;
     
       overflow: visible;
     
       display: block;
+    
+      transform-style: preserve-3d;
+    
+      transform:
+        perspective(900px)
+        rotateX(55deg)
+        scaleY(1.8);
+    
+      transform-origin: bottom center;
     }
     
     #logo-wrap {
@@ -147,18 +169,18 @@
         "Arial Black",
         sans-serif;
     
-      font-size: 520px;
+      font-size: 540px;
     
       font-weight: 900;
     
-      letter-spacing: -0.22em;
+      letter-spacing: -0.18em;
     
       text-transform: uppercase;
     
-      cursor: default;
-    
       transform-box: fill-box;
       transform-origin: center;
+    
+      cursor: default;
     }
     .section {
       margin-block: 5rem;
@@ -280,7 +302,7 @@
   <main class="container">
 
     <section class="hero">
-
+    
       <svg
         id="logo"
         viewBox="0 0 2400 900"
@@ -288,34 +310,20 @@
         xmlns="http://www.w3.org/2000/svg"
       >
     
-        <g
-          id="logo-wrap"
-          transform="
-            translate(180 180)
-            matrix(
-              1,
-              -0.22,
-              0,
-              1,
-              0,
-              0
-            )
-            scale(1.05,1.45)
-          "
-        >
+        <g id="logo-wrap">
     
-          <text class="logo-letter" x="0" y="520">L</text>
-          <text class="logo-letter" x="260" y="520">O</text>
-          <text class="logo-letter" x="560" y="520">G</text>
-          <text class="logo-letter" x="860" y="520">A</text>
-          <text class="logo-letter" x="1160" y="520">N</text>
+          <text class="logo-letter" x="40" y="620">L</text>
+          <text class="logo-letter" x="360" y="620">O</text>
+          <text class="logo-letter" x="700" y="620">G</text>
+          <text class="logo-letter" x="1040" y="620">A</text>
+          <text class="logo-letter" x="1380" y="620">N</text>
     
         </g>
     
       </svg>
     
     </section>
-
+    
     <section class="section">
 
       <div class="section-header">
