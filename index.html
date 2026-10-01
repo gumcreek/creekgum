@@ -1,22 +1,455 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>creekgum</title>
-    <style>
-      body {
-        background-color: #00523f
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>LOGAN</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:wght@200..700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --bg: #d9f7be;
+
+      --text: #1f2937;
+      --muted: #5b6472;
+
+      --border: #b7d9bb;
+
+      --pink: #ff2d95;
+      --pink-light: #ffc1dd;
+
+      --font: "Cascadia Mono", monospace;
+
+      --spring: cubic-bezier(.34,1.56,.64,1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+
+      background: var(--bg);
+
+      color: var(--text);
+
+      font-family: var(--font);
+
+      line-height: 1.8;
+
+      letter-spacing: -0.03em;
+
+      min-height: 100vh;
+
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+
+      text-decoration-color: var(--pink);
+
+      text-decoration-thickness: 2px;
+
+      text-underline-offset: 4px;
+
+      transition:
+        text-underline-offset .2s ease,
+        opacity .2s ease;
+    }
+
+    a:hover {
+      text-underline-offset: 7px;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 2rem));
+
+      margin-inline: auto;
+    }
+
+    header {
+      padding: 2rem 0;
+    }
+
+    .nav {
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+
+      gap: 2rem;
+
+      list-style: none;
+
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+
+      font-weight: 700;
+
+      font-size: 1rem;
+    }
+
+    .hero {
+      min-height: 85vh;
+
+      display: grid;
+
+      place-items: center;
+
+      overflow: hidden;
+
+      padding: 2rem;
+    }
+
+    #logo {
+      width: min(1600px, 140vw);
+
+      overflow: visible;
+
+      fill: var(--pink-light);
+
+      stroke: var(--pink);
+
+      stroke-width: clamp(5px, 0.7vw, 12px);
+
+      paint-order: stroke fill;
+
+      transform:
+        perspective(1200px)
+        rotateX(28deg)
+        scaleY(1.35)
+        skewX(-8deg);
+
+      transform-origin: center;
+
+      filter:
+        drop-shadow(0 0 20px rgba(255,45,149,.25));
+
+      transition:
+        transform 900ms var(--spring);
+    }
+
+    #logo:hover {
+      transform:
+        perspective(1200px)
+        rotateX(30deg)
+        scaleY(1.4)
+        skewX(-8deg)
+        translateY(-8px);
+    }
+
+    #logo text {
+      font-family:
+        Arial Black,
+        Impact,
+        sans-serif;
+
+      font-size: clamp(8rem, 26vw, 24rem);
+
+      font-weight: 900;
+
+      letter-spacing: -0.09em;
+
+      text-transform: uppercase;
+    }
+
+    .section {
+      margin-block: 5rem;
+    }
+
+    .section-header {
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 1rem;
+
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      margin: 0;
+
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+
+      line-height: 1;
+    }
+
+    .timeline {
+      display: grid;
+
+      gap: 1.5rem;
+    }
+
+    .post {
+      border-bottom: 1px solid var(--border);
+
+      padding-bottom: 1.5rem;
+    }
+
+    .post h3 {
+      margin: 0 0 .5rem;
+
+      font-size: 1.25rem;
+
+      line-height: 1.3;
+    }
+
+    .meta {
+      color: var(--muted);
+
+      font-size: .95rem;
+    }
+
+    .tags {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: .5rem;
+
+      margin-top: .75rem;
+    }
+
+    .tag {
+      border: 1px solid var(--border);
+
+      padding: .2rem .7rem;
+
+      border-radius: 999px;
+
+      font-size: .85rem;
+
+      text-decoration: none;
+
+      background: rgba(255,255,255,.35);
+
+      transition:
+        background .2s ease,
+        transform .2s ease,
+        border-color .2s ease;
+    }
+
+    .tag:hover {
+      background: white;
+
+      border-color: var(--pink);
+
+      transform: translateY(-2px);
+    }
+
+    footer {
+      margin-top: 6rem;
+
+      padding: 3rem 0;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-grid {
+      display: flex;
+
+      justify-content: space-between;
+
+      flex-wrap: wrap;
+
+      gap: 2rem;
+    }
+
+    .footer-links {
+      list-style: none;
+
+      padding: 0;
+      margin: 0;
+
+      display: grid;
+
+      gap: .5rem;
+    }
+
+    @media (max-width: 700px) {
+
+      .nav-links {
+        gap: 1rem;
       }
-    </style>
-  </head>
-  <body>
-    <center><img src = "creekgum_clean.gif" alt = "funny logo" width = "516" height = "137"></center>
-    <br>
-    <button onclick = "button1()">
-      click me
-    </button>
-    <script>
-      function button1()
-        {window.location.href = "/secondpage.html"}
-    </script>
-  </body>
+
+      .section-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+      }
+
+      #logo {
+        transform:
+          perspective(900px)
+          rotateX(22deg)
+          scaleY(1.2)
+          skewX(-6deg);
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header class="container">
+
+    <nav class="nav">
+
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+
+    </nav>
+
+  </header>
+
+  <main class="container">
+
+    <section class="hero">
+
+      <svg
+        id="logo"
+        viewBox="0 0 1800 500"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <text
+          x="50%"
+          y="52%"
+          dominant-baseline="middle"
+          text-anchor="middle"
+        >
+          LOGAN
+        </text>
+      </svg>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <h2 class="section-title">
+          Latest Posts
+        </h2>
+
+        <a href="#">
+          View archive →
+        </a>
+
+      </div>
+
+      <div class="timeline">
+
+        <article class="post">
+
+          <h3>
+            <a href="#">
+              Building Cool Things on the Internet
+            </a>
+          </h3>
+
+          <div class="meta">
+            September 2026
+          </div>
+
+          <div class="tags">
+            <a class="tag" href="#">#design</a>
+            <a class="tag" href="#">#web</a>
+          </div>
+
+        </article>
+
+        <article class="post">
+
+          <h3>
+            <a href="#">
+              Thoughts on Creative Coding
+            </a>
+          </h3>
+
+          <div class="meta">
+            August 2026
+          </div>
+
+          <div class="tags">
+            <a class="tag" href="#">#javascript</a>
+            <a class="tag" href="#">#frontend</a>
+          </div>
+
+        </article>
+
+        <article class="post">
+
+          <h3>
+            <a href="#">
+              Why Personal Websites Matter Again
+            </a>
+          </h3>
+
+          <div class="meta">
+            July 2026
+          </div>
+
+          <div class="tags">
+            <a class="tag" href="#">#writing</a>
+            <a class="tag" href="#">#internet</a>
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="container">
+
+    <div class="footer-grid">
+
+      <div>
+        © 2026 LOGAN
+      </div>
+
+      <ul class="footer-links">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Bluesky</a></li>
+        <li><a href="#">Email</a></li>
+      </ul>
+
+    </div>
+
+  </footer>
+
+</body>
 </html>
