@@ -120,7 +120,7 @@
       padding-top: 0;
     
       margin-top: -2rem;
-      margin-bottom: -6rem;
+      margin-bottom: 2rem;
     
       overflow: visible;
     }
@@ -291,9 +291,16 @@
         <g
           id="logo-wrap"
           transform="
-            translate(140 120)
-            skewX(-14)
-            scale(1.15,1.45)
+            translate(180 180)
+            matrix(
+              1,
+              -0.22,
+              0,
+              1,
+              0,
+              0
+            )
+            scale(1.05,1.45)
           "
         >
     
@@ -421,16 +428,31 @@
   
       letter.animate(
         [
-          { transform: 'translateY(0px)' },
-          { transform: 'translateY(-28px)' },
-          { transform: 'translateY(0px)' },
-          { transform: 'translateY(-10px)' },
-          { transform: 'translateY(0px)' }
+          {
+            transform: 'translateY(0px) scaleY(1)'
+          },
+      
+          {
+            transform: 'translateY(-38px) scaleY(1.08)'
+          },
+      
+          {
+            transform: 'translateY(6px) scaleY(0.96)'
+          },
+      
+          {
+            transform: 'translateY(-14px) scaleY(1.02)'
+          },
+      
+          {
+            transform: 'translateY(0px) scaleY(1)'
+          }
         ],
         {
-          duration: 550,
-          easing: 'cubic-bezier(.34,1.56,.64,1)'
+          duration: 950,
+          easing: 'cubic-bezier(.22,1,.36,1)'
         }
+
       );
   
       setTimeout(() => {
