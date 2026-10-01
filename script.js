@@ -2,9 +2,9 @@ const svg = document.getElementById('logo');
 
 const word = 'LOGAN';
 
-const spacing = 250;
+const spacing = 210;
 
-const startX = 420;
+const startX = 380;
 
 word.split('').forEach((char, index) => {
 
@@ -15,11 +15,17 @@ word.split('').forEach((char, index) => {
 
   letter.textContent = char;
 
-  letter.setAttribute('x', startX + index * spacing);
+  letter.setAttribute(
+    'x',
+    startX + index * spacing
+  );
 
-  letter.setAttribute('y', '360');
+  letter.setAttribute('y', '420');
 
-  letter.setAttribute('class', 'logo-letter');
+  letter.setAttribute(
+    'class',
+    'logo-letter'
+  );
 
   svg.appendChild(letter);
 
