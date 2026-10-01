@@ -90,7 +90,7 @@ header {
   display: block;
 }
 
-#logan-text {
+.logo-letter {
   fill: #ff3ea5;
 
   font-family:
@@ -103,15 +103,11 @@ header {
 
   letter-spacing: -0.04em;
 
-  transform: scaleX(1.08);
-
-  transform-origin: center;
-
   cursor: default;
-}
 
-.logo-letter {
   pointer-events: auto;
+
+  user-select: none;
 }
 
 .section {
