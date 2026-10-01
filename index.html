@@ -295,11 +295,39 @@
       }
 
       #logo {
-        transform:
-          perspective(900px)
-          rotateX(22deg)
-          scaleY(1.2)
-          skewX(-6deg);
+        width: min(1800px, 92vw);
+      
+        height: auto;
+      
+        overflow: visible;
+      
+        display: block;
+      }
+      
+      #logo-wrap {
+        fill: #ff2d95;
+      }
+      
+      .logo-letter {
+        fill: #ff2d95;
+      
+        font-family:
+          Impact,
+          "Arial Black",
+          sans-serif;
+      
+        font-size: 520px;
+      
+        font-weight: 900;
+      
+        letter-spacing: -0.2em;
+      
+        text-transform: uppercase;
+      
+        cursor: default;
+      
+        transform-box: fill-box;
+        transform-origin: center;
       }
 
     }
@@ -328,30 +356,28 @@
 
       <svg
         id="logo"
-        viewBox="0 0 2200 700"
+        viewBox="0 0 2600 900"
+        preserveAspectRatio="xMidYMid meet"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g transform="translate(1100 350)">
     
-          <text
-            text-anchor="middle"
-            dominant-baseline="middle"
-            transform="
-              scale(1.8,1)
-              matrix(
-                1.2,
-                -0.25,
-                0,
-                1,
-                0,
-                0
-              )
-            "
-          >
-            LOGAN
-          </text>
+        <g
+          id="logo-wrap"
+          transform="
+            translate(120 120)
+            skewX(-12)
+            scale(1.08,1.32)
+          "
+        >
+    
+          <text class="logo-letter" x="0" y="520">L</text>
+          <text class="logo-letter" x="320" y="520">O</text>
+          <text class="logo-letter" x="690" y="520">G</text>
+          <text class="logo-letter" x="1050" y="520">A</text>
+          <text class="logo-letter" x="1420" y="520">N</text>
     
         </g>
+    
       </svg>
     
     </section>
