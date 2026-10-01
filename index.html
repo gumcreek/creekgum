@@ -7,8 +7,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
     rel="stylesheet"
   >
 
@@ -18,45 +19,63 @@
   <div class="page">
     <header class="site-header">
       <a class="site-name" href="/">Logan Hartmann</a>
-      <p class="site-role">Writer / Developer</p>
+
+      <nav class="site-nav">
+        <a href="#">About</a>
+        <a href="#">Writing</a>
+      </nav>
     </header>
 
     <main>
-      <section class="section">
-        <h2 class="section-label">Today</h2>
-        <p class="lede">
-          I’m Logan Hartmann. I’m interested in design, code, writing, and building things for the web.
-        </p>
-        <p class="body-text">
-          This is my personal website where I share projects, writing, and things I’m thinking about.
+      <section class="intro">
+        <p class="eyebrow">Personal site</p>
+        <h1>
+          Writing, code, and internet projects by
+          <span>Logan Hartmann</span>.
+        </h1>
+        <p class="intro-text">
+          I’m interested in thoughtful design, frontend development, and making things for the web that feel clear, useful, and alive.
         </p>
       </section>
 
-      <section class="section">
-        <h2 class="section-label">Writing</h2>
-        <div class="list" id="posts"></div>
+      <section class="content-section">
+        <div class="section-heading">
+          <h2>Selected Writing</h2>
+          <a href="#">All posts →</a>
+        </div>
+
+        <div class="post-list" id="posts"></div>
       </section>
 
-      <section class="section">
-        <h2 class="section-label">Projects</h2>
+      <section class="content-section">
+        <div class="section-heading">
+          <h2>Current Projects</h2>
+        </div>
 
-        <div class="list">
-          <a class="list-item" href="#">
-            <span class="item-title">Example Project</span>
-            <span class="item-description">A short description of something you made.</span>
+        <div class="project-list">
+          <a class="project-item" href="#">
+            <div>
+              <h3>Project One</h3>
+              <p>A web experiment about motion, layout, and interaction.</p>
+            </div>
           </a>
 
-          <a class="list-item" href="#">
-            <span class="item-title">Another Project</span>
-            <span class="item-description">Something experimental on the web.</span>
+          <a class="project-item" href="#">
+            <div>
+              <h3>Project Two</h3>
+              <p>A personal tool for writing and organizing ideas.</p>
+            </div>
           </a>
         </div>
       </section>
 
-      <section class="section">
-        <h2 class="section-label">More</h2>
-        <p class="body-text">
-          You can find me on <a href="#">GitHub</a>, <a href="#">Bluesky</a>, or by <a href="#">email</a>.
+      <section class="content-section">
+        <div class="section-heading">
+          <h2>Elsewhere</h2>
+        </div>
+
+        <p class="elsewhere-text">
+          Find me on <a href="#">GitHub</a>, <a href="#">Bluesky</a>, or by <a href="#">email</a>.
         </p>
       </section>
     </main>
