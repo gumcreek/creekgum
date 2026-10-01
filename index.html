@@ -24,12 +24,9 @@
 
       --border: #b7d9bb;
 
-      --pink: #ff2d95;
-      --pink-light: #ffc1dd;
+      --pink: #ff3ea5;
 
       --font: "Cascadia Mono", monospace;
-
-      --spring: cubic-bezier(.34,1.56,.64,1);
     }
 
     * {
@@ -83,7 +80,7 @@
     }
 
     header {
-      padding: 2rem 0;
+      padding: 1.5rem 0;
     }
 
     .nav {
@@ -110,175 +107,157 @@
 
       font-weight: 700;
 
-      font-size: 1rem;
+      font-size: .95rem;
     }
+
     .hero {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-    
-      padding-top: 0;
-    
-      margin-top: -2rem;
-      margin-bottom: 2rem;
-    
-      overflow: visible;
-    }
-    
-    .hero {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    
-      padding-top: 0;
-    
+
       margin-top: -1rem;
-      margin-bottom: 4rem;
-    
+      margin-bottom: 5rem;
+
       overflow: visible;
     }
-    
+
     #logo {
-      width: min(95vw, 1800px);
-    
+      width: min(96vw, 1700px);
+
       height: auto;
-    
+
       overflow: visible;
-    
+
       display: block;
-    
-      transform-style: preserve-3d;
-    
-      transform:
-        perspective(900px)
-        rotateX(55deg)
-        scaleY(1.8);
-    
-      transform-origin: bottom center;
     }
-    
-    #logo-wrap {
-      fill: #ff2d95;
-    }
-    
+
     .logo-letter {
-      fill: #ff2d95;
-    
-      font-family:
-        Impact,
-        "Arial Black",
-        sans-serif;
-    
-      font-size: 540px;
-    
-      font-weight: 900;
-    
-      letter-spacing: -0.18em;
-    
-      text-transform: uppercase;
-    
+      fill: var(--pink);
+
       transform-box: fill-box;
       transform-origin: center;
-    
+
       cursor: default;
     }
+
     .section {
       margin-block: 5rem;
     }
-    
+
     .section-header {
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
-    
+
       gap: 1rem;
-    
+
       margin-bottom: 2rem;
     }
-    
+
     .section-title {
       margin: 0;
-    
+
       font-size: clamp(1.5rem, 4vw, 2.5rem);
-    
+
       line-height: 1;
     }
-    
+
     .timeline {
       display: grid;
+
       gap: 1.5rem;
     }
-    
+
     .post {
       border-bottom: 1px solid var(--border);
-    
+
       padding-bottom: 1.5rem;
     }
-    
+
     .post h3 {
       margin: 0 0 .5rem;
-    
+
       font-size: 1.25rem;
-    
+
       line-height: 1.3;
     }
-    
+
     .meta {
       color: var(--muted);
-    
+
       font-size: .95rem;
     }
-    
+
     .tags {
       display: flex;
+
       flex-wrap: wrap;
-    
+
       gap: .5rem;
-    
+
       margin-top: .75rem;
     }
-    
+
     .tag {
       border: 1px solid var(--border);
-    
+
       padding: .2rem .7rem;
-    
+
       border-radius: 999px;
-    
+
       font-size: .85rem;
-    
+
       text-decoration: none;
-    
+
       background: rgba(255,255,255,.35);
     }
-    
+
     footer {
       margin-top: 6rem;
-    
+
       padding: 3rem 0;
-    
+
       border-top: 1px solid var(--border);
     }
-    
+
     .footer-grid {
       display: flex;
-    
+
       justify-content: space-between;
-    
+
       flex-wrap: wrap;
-    
+
       gap: 2rem;
     }
-    
+
     .footer-links {
       list-style: none;
-    
+
       padding: 0;
       margin: 0;
-    
+
       display: grid;
-    
+
       gap: .5rem;
+    }
+
+    @media (max-width: 700px) {
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .section-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+      }
+
+      .hero {
+        margin-bottom: 3rem;
+      }
+
     }
 
   </style>
@@ -302,28 +281,131 @@
   <main class="container">
 
     <section class="hero">
-    
+
       <svg
         id="logo"
-        viewBox="0 0 2400 900"
-        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 2200 700"
         xmlns="http://www.w3.org/2000/svg"
       >
-    
-        <g id="logo-wrap">
-    
-          <text class="logo-letter" x="40" y="620">L</text>
-          <text class="logo-letter" x="360" y="620">O</text>
-          <text class="logo-letter" x="700" y="620">G</text>
-          <text class="logo-letter" x="1040" y="620">A</text>
-          <text class="logo-letter" x="1380" y="620">N</text>
-    
-        </g>
-    
+
+        <!-- L -->
+        <path
+          class="logo-letter"
+          d="
+            M60 620
+            L60 180
+            L230 140
+            L230 500
+            L360 470
+            L360 620
+            Z
+          "
+        />
+
+        <!-- O -->
+        <path
+          class="logo-letter"
+          d="
+            M520 620
+            Q420 620 420 520
+            L420 250
+            Q420 120 590 90
+            L740 90
+            Q900 120 900 250
+            L900 520
+            Q900 620 790 620
+            Z
+
+            M620 500
+            L710 500
+            Q760 500 760 450
+            L760 260
+            Q760 210 700 210
+            L630 210
+            Q570 210 570 260
+            L570 450
+            Q570 500 620 500
+            Z
+          "
+          fill-rule="evenodd"
+        />
+
+        <!-- G -->
+        <path
+          class="logo-letter"
+          d="
+            M1010 620
+            Q900 620 900 520
+            L900 250
+            Q900 120 1060 90
+            L1220 90
+            Q1380 120 1380 240
+            L1380 320
+            L1210 350
+            L1210 260
+            Q1210 210 1150 210
+            L1080 210
+            Q1020 210 1020 260
+            L1020 450
+            Q1020 500 1080 500
+            L1150 500
+            Q1210 500 1210 450
+            L1210 420
+            L1120 420
+            L1120 330
+            L1380 290
+            L1380 620
+            L1230 620
+            L1220 570
+            Q1160 620 1080 620
+            Z
+          "
+        />
+
+        <!-- A -->
+        <path
+          class="logo-letter"
+          d="
+            M1460 620
+            L1610 90
+            L1840 90
+            L2000 620
+            L1840 620
+            L1810 500
+            L1630 500
+            L1600 620
+            Z
+
+            M1660 390
+            L1770 390
+            L1710 180
+            Z
+          "
+          fill-rule="evenodd"
+        />
+
+        <!-- N -->
+        <path
+          class="logo-letter"
+          d="
+            M2040 620
+            L2040 90
+            L2230 90
+            L2360 430
+            L2360 90
+            L2510 90
+            L2510 620
+            L2340 620
+            L2190 250
+            L2190 620
+            Z
+          "
+        />
+
       </svg>
-    
+
     </section>
-    
+
     <section class="section">
 
       <div class="section-header">
@@ -420,57 +502,58 @@
     </div>
 
   </footer>
-<script>
 
-  const letters = document.querySelectorAll('.logo-letter');
-  
-  letters.forEach(letter => {
-  
-    let animating = false;
-  
-    letter.addEventListener('mouseenter', () => {
-  
-      if (animating) return;
-  
-      animating = true;
-  
-      letter.animate(
-        [
+  <script>
+
+    const letters = document.querySelectorAll('.logo-letter');
+
+    letters.forEach(letter => {
+
+      let animating = false;
+
+      letter.addEventListener('mouseenter', () => {
+
+        if (animating) return;
+
+        animating = true;
+
+        letter.animate(
+          [
+            {
+              transform: 'translateY(0px) scaleY(1)'
+            },
+
+            {
+              transform: 'translateY(-38px) scaleY(1.08)'
+            },
+
+            {
+              transform: 'translateY(6px) scaleY(0.96)'
+            },
+
+            {
+              transform: 'translateY(-14px) scaleY(1.02)'
+            },
+
+            {
+              transform: 'translateY(0px) scaleY(1)'
+            }
+          ],
           {
-            transform: 'translateY(0px) scaleY(1)'
-          },
-      
-          {
-            transform: 'translateY(-38px) scaleY(1.08)'
-          },
-      
-          {
-            transform: 'translateY(6px) scaleY(0.96)'
-          },
-      
-          {
-            transform: 'translateY(-14px) scaleY(1.02)'
-          },
-      
-          {
-            transform: 'translateY(0px) scaleY(1)'
+            duration: 950,
+            easing: 'cubic-bezier(.22,1,.36,1)'
           }
-        ],
-        {
-          duration: 950,
-          easing: 'cubic-bezier(.22,1,.36,1)'
-        }
+        );
 
-      );
-  
-      setTimeout(() => {
-        animating = false;
-      }, 550);
-  
+        setTimeout(() => {
+          animating = false;
+        }, 950);
+
+      });
+
     });
-  
-  });
-  
+
   </script>
+
 </body>
 </html>
