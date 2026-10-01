@@ -113,32 +113,45 @@
     .hero {
       display: flex;
       justify-content: center;
-
+    
       margin-top: -1rem;
       margin-bottom: 5rem;
-
+    
       overflow: visible;
     }
-
+    
     #logo {
-      width: min(96vw, 1700px);
-
-      height: auto;
-
+      width: min(96vw, 1900px);
+    
       overflow: visible;
-
+    
       display: block;
     }
-
-    .logo-letter {
-      fill: var(--pink);
-
-      transform-box: fill-box;
+    
+    #logan-text {
+      fill: #ff3ea5;
+    
+      font-family:
+        Impact,
+        Haettenschweiler,
+        "Arial Narrow Bold",
+        sans-serif;
+    
+      font-size: 540px;
+    
+      font-weight: 900;
+    
+      letter-spacing: -0.12em;
+    
       transform-origin: center;
-
+    
+      transform:
+        scaleY(1.15)
+        perspective(1000px)
+        rotateX(18deg);
+    
       cursor: default;
     }
-
     .section {
       margin-block: 5rem;
     }
@@ -284,125 +297,23 @@
 
       <svg
         id="logo"
-        viewBox="0 0 2200 700"
+        viewBox="0 0 2400 700"
         xmlns="http://www.w3.org/2000/svg"
       >
-
-        <!-- L -->
-        <path
-          class="logo-letter"
-          d="
-            M60 620
-            L60 180
-            L230 140
-            L230 500
-            L360 470
-            L360 620
-            Z
-          "
-        />
-
-        <!-- O -->
-        <path
-          class="logo-letter"
-          d="
-            M520 620
-            Q420 620 420 520
-            L420 250
-            Q420 120 590 90
-            L740 90
-            Q900 120 900 250
-            L900 520
-            Q900 620 790 620
-            Z
-
-            M620 500
-            L710 500
-            Q760 500 760 450
-            L760 260
-            Q760 210 700 210
-            L630 210
-            Q570 210 570 260
-            L570 450
-            Q570 500 620 500
-            Z
-          "
-          fill-rule="evenodd"
-        />
-
-        <!-- G -->
-        <path
-          class="logo-letter"
-          d="
-            M1010 620
-            Q900 620 900 520
-            L900 250
-            Q900 120 1060 90
-            L1220 90
-            Q1380 120 1380 240
-            L1380 320
-            L1210 350
-            L1210 260
-            Q1210 210 1150 210
-            L1080 210
-            Q1020 210 1020 260
-            L1020 450
-            Q1020 500 1080 500
-            L1150 500
-            Q1210 500 1210 450
-            L1210 420
-            L1120 420
-            L1120 330
-            L1380 290
-            L1380 620
-            L1230 620
-            L1220 570
-            Q1160 620 1080 620
-            Z
-          "
-        />
-
-        <!-- A -->
-        <path
-          class="logo-letter"
-          d="
-            M1460 620
-            L1610 90
-            L1840 90
-            L2000 620
-            L1840 620
-            L1810 500
-            L1630 500
-            L1600 620
-            Z
-
-            M1660 390
-            L1770 390
-            L1710 180
-            Z
-          "
-          fill-rule="evenodd"
-        />
-
-        <!-- N -->
-        <path
-          class="logo-letter"
-          d="
-            M2040 620
-            L2040 90
-            L2230 90
-            L2360 430
-            L2360 90
-            L2510 90
-            L2510 620
-            L2340 620
-            L2190 250
-            L2190 620
-            Z
-          "
-        />
-
+    
+        <text
+          id="logan-text"
+          x="50%"
+          y="52%"
+          dominant-baseline="middle"
+          text-anchor="middle"
+        >
+          LOGAN
+        </text>
+    
       </svg>
+    
+    </section>
 
     </section>
 
@@ -502,57 +413,84 @@
     </div>
 
   </footer>
-
   <script>
-
-    const letters = document.querySelectorAll('.logo-letter');
-
-    letters.forEach(letter => {
-
-      let animating = false;
-
-      letter.addEventListener('mouseenter', () => {
-
-        if (animating) return;
-
-        animating = true;
-
-        letter.animate(
-          [
-            {
-              transform: 'translateY(0px) scaleY(1)'
-            },
-
-            {
-              transform: 'translateY(-38px) scaleY(1.08)'
-            },
-
-            {
-              transform: 'translateY(6px) scaleY(0.96)'
-            },
-
-            {
-              transform: 'translateY(-14px) scaleY(1.02)'
-            },
-
-            {
-              transform: 'translateY(0px) scaleY(1)'
-            }
-          ],
+  
+  const text = document.getElementById('logan-text');
+  
+  const letters = [];
+  
+  const textContent = text.textContent;
+  
+  text.textContent = '';
+  
+  [...textContent].forEach((char, i) => {
+  
+    const tspan = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "tspan"
+    );
+  
+    tspan.textContent = char;
+  
+    tspan.setAttribute(
+      'dx',
+      i === 0 ? '0' : '-40'
+    );
+  
+    tspan.classList.add('logo-letter');
+  
+    text.appendChild(tspan);
+  
+    letters.push(tspan);
+  
+  });
+  
+  letters.forEach(letter => {
+  
+    let animating = false;
+  
+    letter.addEventListener('mouseenter', () => {
+  
+      if (animating) return;
+  
+      animating = true;
+  
+      letter.animate(
+        [
           {
-            duration: 950,
-            easing: 'cubic-bezier(.22,1,.36,1)'
+            transform: 'translateY(0px) scaleY(1)'
+          },
+  
+          {
+            transform: 'translateY(-34px) scaleY(1.08)'
+          },
+  
+          {
+            transform: 'translateY(8px) scaleY(0.96)'
+          },
+  
+          {
+            transform: 'translateY(-10px) scaleY(1.02)'
+          },
+  
+          {
+            transform: 'translateY(0px) scaleY(1)'
           }
-        );
-
-        setTimeout(() => {
-          animating = false;
-        }, 950);
-
-      });
-
+        ],
+        {
+          duration: 950,
+          easing: 'cubic-bezier(.22,1,.36,1)'
+        }
+      );
+  
+      setTimeout(() => {
+        animating = false;
+      }, 950);
+  
     });
-
+  
+  });
+  
   </script>
 
 </body>
