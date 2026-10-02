@@ -15,7 +15,6 @@ function buildNotesNodes(nodes) {
       children.className = 'notes-children';
       children.appendChild(buildNotesNodes(node.children));
 
-      // start closed
       children.style.height = '0px';
       children.style.opacity = '0';
       children.style.marginTop = '0';
@@ -25,7 +24,9 @@ function buildNotesNodes(nodes) {
 
         if (isOpen) {
           const startHeight = children.scrollHeight;
+
           children.style.height = `${startHeight}px`;
+          children.offsetHeight;
 
           requestAnimationFrame(() => {
             nodeEl.classList.remove('is-open');
