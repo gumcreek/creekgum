@@ -78,91 +78,88 @@ function animateBranchToggle(branch) {
 
   branch.dataset.animating = 'true';
 
-  const freezeAncestors = () => {
-    ancestors.forEach(ancestor => {
-      const ancestorPanel = getBranchPanel(ancestor);
-      if (!ancestorPanel) return;
-      setPanelHeight(ancestorPanel, ancestorPanel.getBoundingClientRect().height);
-    });
-  };
-
-  const resetAncestors = () => {
-    ancestors.forEach(ancestor => {
-      const ancestorPanel = getBranchPanel(ancestor);
-      if (!ancestorPanel) return;
-      if (ancestor.classList.contains('is-open')) {
-        resetPanelHeight(ancestorPanel);
-      } else {
-        ancestorPanel.style.height = '0px';
-      }
-    });
-  };
-
-  let rafId = 0;
+  // Freeze all open ancestor panels at their current rendered heights.
+  ancestors.forEach(ancestor => {
+    const ancestorPanel = getBranchPanel(ancestor);
+    if (!ancestorPanel) return;
+    setPanelHeight(ancestorPanel, ancestorPanel.getBoundingClientRect().height);
+  });
 
   if (opening) {
-    freezeAncestors();
-
-    branch.classList.add('is-open');
+    // Start closed
     panel.style.height = '0px';
 
+    // Force layout before opening
     panel.offsetHeight;
 
-    const tick = () => {
-      setPanelHeight(panel, panel.scrollHeight);
-      ancestors.forEach(ancestor => {
+    branch.classList.add('is-open');
+
+    const targetPanelHeight = panel.scrollHeight;
+    const targetAncestorHeights = ancestors.map(ancestor => {
+      const ancestorPanel = getBranchPanel(ancestor);
+      return ancestorPanel ? ancestorPanel.scrollHeight : 0;
+    });
+
+    requestAnimationFrame(() => {
+      setPanelHeight(panel, targetPanelHeight);
+      ancestors.forEach((ancestor, i) => {
         const ancestorPanel = getBranchPanel(ancestor);
         if (!ancestorPanel) return;
-        setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
+        setPanelHeight(ancestorPanel, targetAncestorHeights[i]);
       });
-      rafId = requestAnimationFrame(tick);
-    };
-
-    rafId = requestAnimationFrame(() => {
-      tick();
     });
 
     const onEnd = (e) => {
       if (e.propertyName !== 'height') return;
       panel.removeEventListener('transitionend', onEnd);
-      cancelAnimationFrame(rafId);
 
       resetPanelHeight(panel);
-      resetAncestors();
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel && ancestor.classList.contains('is-open')) {
+          resetPanelHeight(ancestorPanel);
+        }
+      });
+
       delete branch.dataset.animating;
     };
 
     panel.addEventListener('transitionend', onEnd);
   } else {
-    freezeAncestors();
-
+    // Freeze current open height
     setPanelHeight(panel, panel.getBoundingClientRect().height);
 
+    // Force layout before closing
     panel.offsetHeight;
 
     branch.classList.remove('is-open');
 
-    const tick = () => {
+    const targetAncestorHeights = ancestors.map(ancestor => {
+      const ancestorPanel = getBranchPanel(ancestor);
+      return ancestorPanel ? ancestorPanel.scrollHeight : 0;
+    });
+
+    requestAnimationFrame(() => {
       setPanelHeight(panel, 0);
-      ancestors.forEach(ancestor => {
+      ancestors.forEach((ancestor, i) => {
         const ancestorPanel = getBranchPanel(ancestor);
         if (!ancestorPanel) return;
-        setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
+        setPanelHeight(ancestorPanel, targetAncestorHeights[i]);
       });
-      rafId = requestAnimationFrame(tick);
-    };
-
-    rafId = requestAnimationFrame(() => {
-      tick();
     });
 
     const onEnd = (e) => {
       if (e.propertyName !== 'height') return;
       panel.removeEventListener('transitionend', onEnd);
-      cancelAnimationFrame(rafId);
 
       panel.style.height = '0px';
-      resetAncestors();
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel && ancestor.classList.contains('is-open')) {
+          resetPanelHeight(ancestorPanel);
+        }
+      });
+
       delete branch.dataset.animating;
     };
 
