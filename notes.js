@@ -103,11 +103,9 @@ function animateBranchToggle(branch) {
   if (opening) {
     freezeAncestors();
 
-    // Keep the branch closed initially so we can animate from 0
     branch.classList.add('is-open');
     panel.style.height = '0px';
 
-    // Force layout with the open styles applied
     panel.offsetHeight;
 
     const tick = () => {
@@ -140,7 +138,6 @@ function animateBranchToggle(branch) {
 
     setPanelHeight(panel, panel.getBoundingClientRect().height);
 
-    // Force layout
     panel.offsetHeight;
 
     branch.classList.remove('is-open');
