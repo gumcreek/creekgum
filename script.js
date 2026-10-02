@@ -38,6 +38,37 @@ function renderEssays(essays, containerId, limit = null) {
   });
 }
 
+function toggleNotesGroup(nodeEl, group) {
+  const isCollapsed = nodeEl.classList.contains('collapsed');
+
+  if (isCollapsed) {
+    nodeEl.classList.remove('collapsed');
+
+    const fullHeight = group.scrollHeight;
+
+    group.style.height = '0px';
+
+    requestAnimationFrame(() => {
+      group.style.height = fullHeight + 'px';
+    });
+
+    const onExpandEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      group.style.height = 'auto';
+      group.removeEventListener('transitionend', onExpandEnd);
+    };
+
+    group.addEventListener('transitionend', onExpandEnd);
+  } else {
+    group.style.height = group.scrollHeight + 'px';
+
+    requestAnimationFrame(() => {
+      nodeEl.classList.add('collapsed');
+      group.style.height = '0px';
+    });
+  }
+}
+
 function buildNotesNodes(nodes) {
   const wrapper = document.createElement('div');
 
@@ -56,7 +87,7 @@ function buildNotesNodes(nodes) {
       group.appendChild(buildNotesNodes(node.children));
 
       toggle.addEventListener('click', () => {
-        nodeEl.classList.toggle('collapsed');
+        toggleNotesGroup(nodeEl, group);
       });
 
       nodeEl.appendChild(toggle);
