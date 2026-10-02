@@ -38,6 +38,73 @@ function renderEssays(essays, containerId, limit = null) {
   });
 }
 
+function animateNotesBranch(details) {
+  const summary = details.querySelector('summary');
+  const content = details.querySelector('.notes-children');
+  if (!summary || !content) return;
+
+  let isClosing = false;
+  let isExpanding = false;
+
+  function shrink() {
+    isClosing = true;
+
+    const startHeight = `${details.offsetHeight}px`;
+    const endHeight = `${summary.offsetHeight}px`;
+
+    details.style.height = startHeight;
+
+    requestAnimationFrame(() => {
+      details.style.height = endHeight;
+      content.style.opacity = '0';
+      content.style.transform = 'translateY(-4px)';
+    });
+  }
+
+  function expand() {
+    isExpanding = true;
+
+    const startHeight = `${details.offsetHeight}px`;
+    details.style.height = startHeight;
+    details.open = true;
+
+    requestAnimationFrame(() => {
+      const endHeight = `${summary.offsetHeight + content.offsetHeight}px`;
+      details.style.height = endHeight;
+      content.style.opacity = '1';
+      content.style.transform = 'translateY(0)';
+    });
+  }
+
+  function onAnimationEnd(e) {
+    if (e.propertyName !== 'height') return;
+
+    details.style.height = '';
+    isClosing = false;
+    isExpanding = false;
+
+    if (!details.open) {
+      content.style.opacity = '0';
+      content.style.transform = 'translateY(-4px)';
+    }
+
+    details.removeEventListener('transitionend', onAnimationEnd);
+  }
+
+  summary.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    if (isClosing || !details.open) {
+      expand();
+    } else if (isExpanding || details.open) {
+      details.open = false;
+      shrink();
+    }
+
+    details.addEventListener('transitionend', onAnimationEnd);
+  });
+}
+
 function buildNotesNodes(nodes) {
   const wrapper = document.createElement('div');
 
@@ -78,6 +145,8 @@ async function loadNotesTree() {
 
     const data = await response.json();
     container.appendChild(buildNotesNodes(data));
+
+    container.querySelectorAll('.notes-branch').forEach(animateNotesBranch);
   } catch (error) {
     console.error(error);
     container.innerHTML = '<p class="essay-meta">Could not load notes.</p>';
