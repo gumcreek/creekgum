@@ -142,6 +142,13 @@ a {
   text-decoration: none;
 }
 
+.essay-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
 .essay-title {
   color: var(--heading);
   font-size: 1rem;
@@ -194,6 +201,7 @@ a {
 .essay-item:hover .essay-dots::after {
   opacity: 1;
 }
+
 .notes-tree {
   display: grid;
   gap: 0.55rem;
