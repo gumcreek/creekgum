@@ -19,6 +19,11 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  overscroll-behavior-y: auto;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -202,59 +207,52 @@ a {
   opacity: 1;
 }
 
+/* Notes tree with native details/summary */
 .notes-tree {
   display: grid;
   gap: 0.55rem;
 }
 
-.notes-node {
-  padding-left: 0;
+.notes-branch {
+  margin: 0;
 }
 
-.notes-group {
-  border-left: 1px solid rgba(27, 31, 29, 0.12);
-  margin-left: 0.35rem;
-  padding-left: 1rem;
-  overflow: hidden;
-  height: 0;
-  opacity: 0;
-  margin-top: 0;
-  transition:
-    height 0.48s cubic-bezier(.22, .61, .36, 1),
-    opacity 0.38s cubic-bezier(.22, .61, .36, 1),
-    margin-top 0.38s cubic-bezier(.22, .61, .36, 1);
-}
-
-.notes-toggle {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  font: inherit;
-  color: var(--heading);
+.notes-branch > summary {
+  list-style: none;
   cursor: pointer;
+  color: var(--heading);
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  transition: color 0.22s ease;
 }
 
-.notes-toggle::before {
+.notes-branch > summary::-webkit-details-marker {
+  display: none;
+}
+
+.notes-branch > summary::before {
   content: "▸";
   color: var(--muted);
   font-size: 0.8rem;
-  transition:
-    transform 0.32s cubic-bezier(.22, .61, .36, 1),
-    color 0.22s ease;
+  transition: transform 0.26s cubic-bezier(.22, .61, .36, 1), color 0.22s ease;
 }
 
-.notes-node.is-open > .notes-toggle::before {
+.notes-branch[open] > summary::before {
   transform: rotate(90deg);
 }
 
-.notes-label {
-  color: var(--heading);
-  font-weight: 500;
-  transition: color 0.22s ease;
+.notes-branch > summary:hover,
+.notes-branch > summary:hover::before {
+  color: #111311;
+}
+
+.notes-children {
+  margin-left: 0.35rem;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(27, 31, 29, 0.12);
 }
 
 .notes-leaf {
@@ -265,9 +263,7 @@ a {
   transition: color 0.22s ease;
 }
 
-.notes-leaf:hover,
-.notes-toggle:hover .notes-label,
-.notes-toggle:hover::before {
+.notes-leaf:hover {
   color: #111311;
 }
 
