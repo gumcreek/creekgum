@@ -38,50 +38,60 @@ function renderEssays(essays, containerId, limit = null) {
   });
 }
 
-function toggleNotesGroup(nodeEl, group) {
-  const isCollapsed = nodeEl.classList.contains('collapsed');
+function openNotesGroup(nodeEl, group) {
+  nodeEl.classList.add('is-open');
 
-  if (isCollapsed) {
-    nodeEl.classList.remove('collapsed');
+  group.style.display = 'block';
+  const endHeight = group.scrollHeight;
 
-    group.style.display = 'block';
-    group.style.height = '0px';
-    group.style.opacity = '0';
+  group.style.height = '0px';
+  group.style.opacity = '0';
+  group.style.marginTop = '0';
 
-    const fullHeight = group.scrollHeight;
-
-    requestAnimationFrame(() => {
-      group.style.height = fullHeight + 'px';
-      group.style.opacity = '1';
-      group.style.marginTop = '0.5rem';
-    });
-
-    const onExpandEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      group.style.height = 'auto';
-      group.removeEventListener('transitionend', onExpandEnd);
-    };
-
-    group.addEventListener('transitionend', onExpandEnd);
-  } else {
-    group.style.height = group.scrollHeight + 'px';
+  requestAnimationFrame(() => {
+    group.style.height = `${endHeight}px`;
     group.style.opacity = '1';
     group.style.marginTop = '0.5rem';
+  });
 
-    requestAnimationFrame(() => {
-      group.style.height = '0px';
-      group.style.opacity = '0';
-      group.style.marginTop = '0';
-    });
+  const onEnd = (e) => {
+    if (e.propertyName !== 'height') return;
+    group.style.height = 'auto';
+    group.removeEventListener('transitionend', onEnd);
+  };
 
-    const onCollapseEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      nodeEl.classList.add('collapsed');
-      group.style.display = 'block';
-      group.removeEventListener('transitionend', onCollapseEnd);
-    };
+  group.addEventListener('transitionend', onEnd);
+}
 
-    group.addEventListener('transitionend', onCollapseEnd);
+function closeNotesGroup(nodeEl, group) {
+  const startHeight = group.scrollHeight;
+
+  group.style.height = `${startHeight}px`;
+  group.style.opacity = '1';
+  group.style.marginTop = '0.5rem';
+
+  requestAnimationFrame(() => {
+    group.style.height = '0px';
+    group.style.opacity = '0';
+    group.style.marginTop = '0';
+  });
+
+  const onEnd = (e) => {
+    if (e.propertyName !== 'height') return;
+    nodeEl.classList.remove('is-open');
+    group.removeEventListener('transitionend', onEnd);
+  };
+
+  group.addEventListener('transitionend', onEnd);
+}
+
+function toggleNotesGroup(nodeEl, group) {
+  const isOpen = nodeEl.classList.contains('is-open');
+
+  if (isOpen) {
+    closeNotesGroup(nodeEl, group);
+  } else {
+    openNotesGroup(nodeEl, group);
   }
 }
 
@@ -91,7 +101,7 @@ function buildNotesNodes(nodes) {
   nodes.forEach(node => {
     if (node.children && node.children.length) {
       const nodeEl = document.createElement('div');
-      nodeEl.className = 'notes-node';
+      nodeEl.className = 'notes-node is-open';
 
       const toggle = document.createElement('button');
       toggle.className = 'notes-toggle';
