@@ -42,14 +42,14 @@ function openNotesGroup(nodeEl, group) {
   nodeEl.classList.add('is-open');
 
   group.style.display = 'block';
-  const endHeight = group.scrollHeight;
-
   group.style.height = '0px';
   group.style.opacity = '0';
   group.style.marginTop = '0';
 
+  const targetHeight = group.scrollHeight;
+
   requestAnimationFrame(() => {
-    group.style.height = `${endHeight}px`;
+    group.style.height = `${targetHeight}px`;
     group.style.opacity = '1';
     group.style.marginTop = '0.5rem';
   });
@@ -64,9 +64,7 @@ function openNotesGroup(nodeEl, group) {
 }
 
 function closeNotesGroup(nodeEl, group) {
-  const startHeight = group.scrollHeight;
-
-  group.style.height = `${startHeight}px`;
+  group.style.height = `${group.scrollHeight}px`;
   group.style.opacity = '1';
   group.style.marginTop = '0.5rem';
 
@@ -86,9 +84,7 @@ function closeNotesGroup(nodeEl, group) {
 }
 
 function toggleNotesGroup(nodeEl, group) {
-  const isOpen = nodeEl.classList.contains('is-open');
-
-  if (isOpen) {
+  if (nodeEl.classList.contains('is-open')) {
     closeNotesGroup(nodeEl, group);
   } else {
     openNotesGroup(nodeEl, group);
@@ -101,7 +97,7 @@ function buildNotesNodes(nodes) {
   nodes.forEach(node => {
     if (node.children && node.children.length) {
       const nodeEl = document.createElement('div');
-      nodeEl.className = 'notes-node is-open';
+      nodeEl.className = 'notes-node';
 
       const toggle = document.createElement('button');
       toggle.className = 'notes-toggle';
@@ -111,6 +107,11 @@ function buildNotesNodes(nodes) {
       const group = document.createElement('div');
       group.className = 'notes-group';
       group.appendChild(buildNotesNodes(node.children));
+
+      // Start collapsed
+      group.style.height = '0px';
+      group.style.opacity = '0';
+      group.style.marginTop = '0';
 
       toggle.addEventListener('click', () => {
         toggleNotesGroup(nodeEl, group);
