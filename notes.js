@@ -33,80 +33,6 @@ function buildNotesNodes(nodes) {
   return wrapper;
 }
 
-function initNotesAnimations(container) {
-  const branches = container.querySelectorAll('.notes-branch');
-
-  branches.forEach((branch) => {
-    const summary = branch.querySelector(':scope > summary');
-    const content = branch.querySelector(':scope > .notes-children');
-    if (!summary || !content) return;
-
-    let isClosing = false;
-    let isOpening = false;
-
-    summary.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      branch.style.overflow = 'hidden';
-
-      if (isClosing || !branch.open) {
-        openBranch(branch, content);
-      } else if (isOpening || branch.open) {
-        closeBranch(branch, content);
-      }
-    });
-
-    content.addEventListener('transitionend', (e) => {
-      if (e.propertyName !== 'height') return;
-    });
-  });
-
-  function closeBranch(branch, content) {
-    const startHeight = `${branch.offsetHeight}px`;
-    branch.style.height = startHeight;
-
-    requestAnimationFrame(() => {
-      content.style.opacity = '0';
-      content.style.transform = 'translateY(-4px)';
-      branch.style.height = `${branch.querySelector(':scope > summary').offsetHeight}px`;
-    });
-
-    const onEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      branch.open = false;
-      branch.style.height = '';
-      branch.removeEventListener('transitionend', onEnd);
-    };
-
-    branch.addEventListener('transitionend', onEnd);
-  }
-
-  function openBranch(branch, content) {
-    branch.open = true;
-
-    const startHeight = `${branch.querySelector(':scope > summary').offsetHeight}px`;
-    const endHeight = `${branch.offsetHeight}px`;
-
-    branch.style.height = startHeight;
-    content.style.opacity = '0';
-    content.style.transform = 'translateY(-4px)';
-
-    requestAnimationFrame(() => {
-      branch.style.height = endHeight;
-      content.style.opacity = '1';
-      content.style.transform = 'translateY(0)';
-    });
-
-    const onEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      branch.style.height = '';
-      branch.removeEventListener('transitionend', onEnd);
-    };
-
-    branch.addEventListener('transitionend', onEnd);
-  }
-}
-
 function initNotePreview(container) {
   const preview = document.getElementById('note-preview');
   const previewDate = document.getElementById('note-preview-date');
@@ -176,7 +102,6 @@ async function loadNotesTree() {
 
     const data = await response.json();
     container.appendChild(buildNotesNodes(data));
-    initNotesAnimations(container);
     initNotePreview(container);
   } catch (error) {
     console.error(error);
