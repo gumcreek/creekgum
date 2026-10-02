@@ -38,56 +38,45 @@ function renderEssays(essays, containerId, limit = null) {
   });
 }
 
-function openNotesGroup(nodeEl, group) {
+function setGroupOpen(nodeEl, group) {
   nodeEl.classList.add('is-open');
 
   group.style.display = 'block';
+  const targetHeight = group.scrollHeight;
+
   group.style.height = '0px';
   group.style.opacity = '0';
   group.style.marginTop = '0';
-
-  const targetHeight = group.scrollHeight;
 
   requestAnimationFrame(() => {
     group.style.height = `${targetHeight}px`;
     group.style.opacity = '1';
     group.style.marginTop = '0.5rem';
   });
-
-  const onEnd = (e) => {
-    if (e.propertyName !== 'height') return;
-    group.style.height = 'auto';
-    group.removeEventListener('transitionend', onEnd);
-  };
-
-  group.addEventListener('transitionend', onEnd);
 }
 
-function closeNotesGroup(nodeEl, group) {
-  group.style.height = `${group.scrollHeight}px`;
+function setGroupClosed(nodeEl, group) {
+  const startHeight = group.scrollHeight;
+
+  group.style.height = `${startHeight}px`;
   group.style.opacity = '1';
   group.style.marginTop = '0.5rem';
 
   requestAnimationFrame(() => {
+    nodeEl.classList.remove('is-open');
     group.style.height = '0px';
     group.style.opacity = '0';
     group.style.marginTop = '0';
   });
-
-  const onEnd = (e) => {
-    if (e.propertyName !== 'height') return;
-    nodeEl.classList.remove('is-open');
-    group.removeEventListener('transitionend', onEnd);
-  };
-
-  group.addEventListener('transitionend', onEnd);
 }
 
 function toggleNotesGroup(nodeEl, group) {
-  if (nodeEl.classList.contains('is-open')) {
-    closeNotesGroup(nodeEl, group);
+  const isOpen = nodeEl.classList.contains('is-open');
+
+  if (isOpen) {
+    setGroupClosed(nodeEl, group);
   } else {
-    openNotesGroup(nodeEl, group);
+    setGroupOpen(nodeEl, group);
   }
 }
 
@@ -108,7 +97,6 @@ function buildNotesNodes(nodes) {
       group.className = 'notes-group';
       group.appendChild(buildNotesNodes(node.children));
 
-      // Start collapsed
       group.style.height = '0px';
       group.style.opacity = '0';
       group.style.marginTop = '0';
