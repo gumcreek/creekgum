@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="notes">
-  <div class="page-shell">
+  <div class="page-shell notes-page-shell">
     <aside class="side-nav">
       <a class="side-link" href="notes.html" data-nav="notes">Notes</a>
       <a class="side-link" href="essays.html" data-nav="essays">Essays</a>
@@ -32,7 +32,17 @@
             <h2>Notes</h2>
           </div>
 
-          <div class="notes-tree" id="notes-tree"></div>
+          <div class="notes-layout">
+            <div class="notes-tree" id="notes-tree"></div>
+
+            <aside class="note-preview" id="note-preview" aria-live="polite">
+              <div class="note-preview-inner">
+                <div class="note-preview-date" id="note-preview-date"></div>
+                <div class="note-preview-title" id="note-preview-title"></div>
+                <div class="note-preview-body" id="note-preview-body"></div>
+              </div>
+            </aside>
+          </div>
         </section>
       </main>
     </div>
