@@ -39,15 +39,21 @@ function renderEssays(essays, containerId, limit = null) {
 }
 
 function updateAncestorHeights(group) {
-  let parentGroup = group.parentElement.closest('.notes-group');
+  requestAnimationFrame(() => {
+    let currentGroup = group.parentElement.closest('.notes-group');
 
-  while (parentGroup) {
-    const parentNode = parentGroup.parentElement;
-    if (parentNode.classList.contains('is-open')) {
-      parentGroup.style.height = `${parentGroup.scrollHeight}px`;
+    while (currentGroup) {
+      const currentNode = currentGroup.parentElement;
+
+      if (currentNode.classList.contains('is-open')) {
+        currentGroup.style.height = 'auto';
+        const nextHeight = currentGroup.scrollHeight;
+        currentGroup.style.height = `${nextHeight}px`;
+      }
+
+      currentGroup = currentGroup.parentElement.closest('.notes-group');
     }
-    parentGroup = parentGroup.parentElement.closest('.notes-group');
-  }
+  });
 }
 
 function setGroupOpen(nodeEl, group) {
@@ -66,10 +72,19 @@ function setGroupOpen(nodeEl, group) {
 
     updateAncestorHeights(group);
   });
+
+  const onEnd = (e) => {
+    if (e.propertyName !== 'height') return;
+    group.style.height = 'auto';
+    group.removeEventListener('transitionend', onEnd);
+  };
+
+  group.addEventListener('transitionend', onEnd);
 }
 
 function setGroupClosed(nodeEl, group) {
-  group.style.height = `${group.scrollHeight}px`;
+  const startHeight = group.scrollHeight;
+  group.style.height = `${startHeight}px`;
   group.style.opacity = '1';
   group.style.marginTop = '0.5rem';
 
