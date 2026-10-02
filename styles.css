@@ -207,7 +207,6 @@ a {
   opacity: 1;
 }
 
-/* Notes tree with native details/summary */
 .notes-tree {
   display: grid;
   gap: 0.55rem;
@@ -215,6 +214,8 @@ a {
 
 .notes-branch {
   margin: 0;
+  overflow: hidden;
+  transition: height 0.42s cubic-bezier(.22, .61, .36, 1);
 }
 
 .notes-branch > summary {
@@ -236,7 +237,9 @@ a {
   content: "▸";
   color: var(--muted);
   font-size: 0.8rem;
-  transition: transform 0.26s cubic-bezier(.22, .61, .36, 1), color 0.22s ease;
+  transition:
+    transform 0.32s cubic-bezier(.22, .61, .36, 1),
+    color 0.22s ease;
 }
 
 .notes-branch[open] > summary::before {
