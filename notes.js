@@ -43,31 +43,27 @@ function buildNotesNodes(nodes) {
   return wrapper;
 }
 
-function animateAncestorHeights(fromChildren) {
-  let ancestorChildren = fromChildren.parentElement.closest('.notes-children');
+function updateOpenAncestorHeights(startChildren) {
+  let parentBranch = startChildren.parentElement.closest('.notes-branch');
 
-  while (ancestorChildren) {
-    const ancestorBranch = ancestorChildren.closest('.notes-branch');
-    if (ancestorBranch && ancestorBranch.classList.contains('is-open')) {
-      const startHeight = ancestorChildren.offsetHeight;
-      ancestorChildren.style.height = `${startHeight}px`;
-
-      requestAnimationFrame(() => {
-        const endHeight = ancestorChildren.scrollHeight;
-        ancestorChildren.style.height = `${endHeight}px`;
-      });
-
-      const onEnd = (e) => {
-        if (e.propertyName !== 'height') return;
-        ancestorChildren.style.height = 'auto';
-        ancestorChildren.removeEventListener('transitionend', onEnd);
-      };
-
-      ancestorChildren.addEventListener('transitionend', onEnd);
+  while (parentBranch) {
+    const parentChildren = parentBranch.querySelector(':scope > .notes-children');
+    if (parentBranch.classList.contains('is-open') && parentChildren) {
+      parentChildren.style.height = 'auto';
+      const fullHeight = parentChildren.scrollHeight;
+      parentChildren.style.height = `${fullHeight}px`;
     }
 
-    ancestorChildren = ancestorChildren.parentElement.closest('.notes-children');
+    parentBranch = parentBranch.parentElement.closest('.notes-branch');
   }
+}
+
+function animateAncestorHeightsAfterFrame(startChildren) {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      updateOpenAncestorHeights(startChildren);
+    });
+  });
 }
 
 function openBranch(branch, children) {
@@ -82,13 +78,14 @@ function openBranch(branch, children) {
     children.style.height = `${endHeight}px`;
     children.style.opacity = '1';
     children.style.marginTop = '0.5rem';
-    animateAncestorHeights(children);
   });
 
   const onEnd = (e) => {
     if (e.propertyName !== 'height') return;
     children.style.height = 'auto';
     children.removeEventListener('transitionend', onEnd);
+
+    animateAncestorHeightsAfterFrame(children);
   };
 
   children.addEventListener('transitionend', onEnd);
@@ -103,8 +100,16 @@ function closeBranch(branch, children) {
     children.style.height = '0px';
     children.style.opacity = '0';
     children.style.marginTop = '0';
-    animateAncestorHeights(children);
   });
+
+  const onEnd = (e) => {
+    if (e.propertyName !== 'height') return;
+    children.removeEventListener('transitionend', onEnd);
+
+    animateAncestorHeightsAfterFrame(children);
+  };
+
+  children.addEventListener('transitionend', onEnd);
 }
 
 function toggleBranch(branch, children) {
