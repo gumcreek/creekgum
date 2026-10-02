@@ -30,12 +30,10 @@ function buildNotesNodes(nodes) {
       const leaf = document.createElement(node.url ? 'a' : 'div');
       leaf.className = 'notes-leaf';
       leaf.textContent = node.label;
-
       if (node.url) leaf.href = node.url;
       if (node.note) leaf.dataset.note = node.note;
       if (node.date) leaf.dataset.date = node.date;
       leaf.dataset.title = node.label;
-
       wrapper.appendChild(leaf);
     }
   });
@@ -49,20 +47,20 @@ function getBranchPanel(branch) {
 
 function getOpenAncestorBranches(branch) {
   const ancestors = [];
-  let current = branch.parentElement.closest('.notes-branch');
+  let current = branch.parentElement ? branch.parentElement.closest('.notes-branch') : null;
 
   while (current) {
     if (current.classList.contains('is-open')) {
       ancestors.push(current);
     }
-    current = current.parentElement.closest('.notes-branch');
+    current = current.parentElement ? current.parentElement.closest('.notes-branch') : null;
   }
 
   return ancestors;
 }
 
-function freezePanelHeight(panel) {
-  panel.style.height = `${panel.scrollHeight}px`;
+function setPanelHeight(panel, height) {
+  panel.style.height = `${height}px`;
 }
 
 function resetPanelHeight(panel) {
@@ -71,67 +69,105 @@ function resetPanelHeight(panel) {
 
 function animateBranchToggle(branch) {
   const panel = getBranchPanel(branch);
-  const ancestors = getOpenAncestorBranches(branch);
-  const affectedBranches = [branch, ...ancestors];
-  const affectedPanels = affectedBranches.map(getBranchPanel);
+  if (!panel) return;
 
-  // Freeze all currently affected panel heights before changing state
-  affectedPanels.forEach(freezePanelHeight);
+  const ancestors = getOpenAncestorBranches(branch);
+  const isOpening = !branch.classList.contains('is-open');
+
+  const startHeight = panel.getBoundingClientRect().height;
+
+  // Freeze open ancestor heights before changing anything
+  ancestors.forEach(ancestor => {
+    const ancestorPanel = getBranchPanel(ancestor);
+    if (ancestorPanel) {
+      setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
+    }
+  });
+
+  // Freeze the current panel height too
+  setPanelHeight(panel, startHeight);
 
   // Force layout
   panel.offsetHeight;
 
-  const opening = !branch.classList.contains('is-open');
-
-  if (opening) {
+  if (isOpening) {
     branch.classList.add('is-open');
-  } else {
-    branch.classList.remove('is-open');
-  }
+    const targetHeight = panel.scrollHeight;
 
-  requestAnimationFrame(() => {
-    // Measure target heights after state change
-    const targetHeights = affectedPanels.map(p => p.scrollHeight);
-
-    affectedPanels.forEach((p, i) => {
-      p.style.height = `${targetHeights[i]}px`;
-    });
-
-    if (opening) {
-      panel.style.opacity = '1';
-      panel.style.marginTop = '0.5rem';
-    } else {
-      panel.style.opacity = '0';
-      panel.style.marginTop = '0';
-    }
-
-    let remaining = affectedPanels.length;
-
-    affectedPanels.forEach((p, i) => {
-      const onEnd = (e) => {
-        if (e.propertyName !== 'height') return;
-
-        p.removeEventListener('transitionend', onEnd);
-        remaining -= 1;
-
-        if (remaining === 0) {
-          // Reset open panels to auto so nested content can grow naturally
-          affectedBranches.forEach((b) => {
-            if (b.classList.contains('is-open')) {
-              resetPanelHeight(getBranchPanel(b));
-            }
-          });
-
-          // Closed panel should stay at 0
-          if (!branch.classList.contains('is-open')) {
-            panel.style.height = '0px';
-          }
+    let rafId = null;
+    const tickAncestors = () => {
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel) {
+          setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
         }
-      };
+      });
+      rafId = requestAnimationFrame(tickAncestors);
+    };
 
-      p.addEventListener('transitionend', onEnd);
+    rafId = requestAnimationFrame(tickAncestors);
+
+    requestAnimationFrame(() => {
+      setPanelHeight(panel, targetHeight);
     });
-  });
+
+    const onEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      panel.removeEventListener('transitionend', onEnd);
+      if (rafId) cancelAnimationFrame(rafId);
+
+      resetPanelHeight(panel);
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel && ancestor.classList.contains('is-open')) {
+          resetPanelHeight(ancestorPanel);
+        }
+      });
+    };
+
+    panel.addEventListener('transitionend', onEnd);
+  } else {
+    const openHeight = panel.scrollHeight;
+    setPanelHeight(panel, openHeight);
+
+    // Force layout before collapsing
+    panel.offsetHeight;
+
+    let rafId = null;
+    const tickAncestors = () => {
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel) {
+          setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
+        }
+      });
+      rafId = requestAnimationFrame(tickAncestors);
+    };
+
+    rafId = requestAnimationFrame(tickAncestors);
+
+    branch.classList.remove('is-open');
+
+    requestAnimationFrame(() => {
+      setPanelHeight(panel, 0);
+    });
+
+    const onEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      panel.removeEventListener('transitionend', onEnd);
+      if (rafId) cancelAnimationFrame(rafId);
+
+      panel.style.height = '0px';
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel && ancestor.classList.contains('is-open')) {
+          resetPanelHeight(ancestorPanel);
+        }
+      });
+    };
+
+    panel.addEventListener('transitionend', onEnd);
+  }
 }
 
 function initNotePreview(container) {
@@ -147,13 +183,10 @@ function initNotePreview(container) {
 
   function showPreview(target) {
     if (!target.dataset.note) return;
-
     clearTimeout(hideTimeout);
-
     previewDate.textContent = target.dataset.date || '';
     previewTitle.textContent = target.dataset.title || '';
     previewBody.textContent = target.dataset.note || '';
-
     preview.classList.add('visible');
   }
 
@@ -175,10 +208,8 @@ function initNotePreview(container) {
   container.addEventListener('mouseout', (e) => {
     const leaf = e.target.closest('.notes-leaf');
     if (!leaf) return;
-
     const related = e.relatedTarget;
-    if (preview.contains(related)) return;
-
+    if (related && preview.contains(related)) return;
     scheduleHide();
   });
 
@@ -200,7 +231,6 @@ async function loadNotesTree() {
   try {
     const response = await fetch('notes-tree.json');
     if (!response.ok) throw new Error('Failed to load notes-tree.json');
-
     const data = await response.json();
     container.appendChild(buildNotesNodes(data));
     initNotePreview(container);
