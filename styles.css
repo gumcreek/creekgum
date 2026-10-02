@@ -150,11 +150,12 @@ a {
 .thought-dots {
   height: 0.7em;
   align-self: center;
-  background-image: radial-gradient(circle, rgba(27, 31, 29, 0.32) 1.15px, transparent 1.25px);
+  background-image: radial-gradient(circle, rgba(27, 31, 29, 0.45) 1.15px, transparent 1.25px);
   background-size: 8px 8px;
   background-position: left center;
   background-repeat: repeat-x;
   transform: translateY(0.08em);
+  transition: opacity 0.22s ease, filter 0.22s ease;
 }
 
 .thought-meta {
@@ -168,6 +169,10 @@ a {
 .thought-item:hover .thought-title,
 .thought-item:hover .thought-meta {
   color: var(--heading);
+}
+
+.thought-item:hover .thought-dots {
+  filter: brightness(0.45);
 }
 
 .thought-tree {
@@ -203,7 +208,7 @@ a {
   content: "▾";
   color: var(--muted);
   font-size: 0.8rem;
-  transition: transform 0.22s ease;
+  transition: transform 0.22s ease, color 0.22s ease;
 }
 
 .tree-node.collapsed > .tree-toggle::before {
@@ -225,7 +230,8 @@ a {
 }
 
 .tree-leaf:hover,
-.tree-toggle:hover .tree-label {
+.tree-toggle:hover .tree-label,
+.tree-toggle:hover::before {
   color: var(--heading);
 }
 
