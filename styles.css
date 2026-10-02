@@ -220,9 +220,9 @@ a {
   height: auto;
   opacity: 1;
   transition:
-    height 0.42s cubic-bezier(.22, .61, .36, 1),
-    opacity 0.52s cubic-bezier(.22, .61, .36, 1),
-    margin-top 0.52s cubic-bezier(.22, .61, .36, 1);
+    height 0.48s cubic-bezier(.22, .61, .36, 1),
+    opacity 0.38s cubic-bezier(.22, .61, .36, 1),
+    margin-top 0.38s cubic-bezier(.22, .61, .36, 1);
 }
 
 .notes-toggle {
@@ -247,7 +247,7 @@ a {
     color 0.22s ease;
 }
 
-.notes-node.collapsed > .notes-toggle::before {
+.notes-node:not(.is-open) > .notes-toggle::before {
   transform: rotate(-90deg);
 }
 
@@ -269,10 +269,6 @@ a {
 .notes-toggle:hover .notes-label,
 .notes-toggle:hover::before {
   color: #111311;
-}
-
-.notes-node.collapsed > .notes-group {
-  margin-top: 0;
 }
 
 .post-page {
