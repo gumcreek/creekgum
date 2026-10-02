@@ -43,30 +43,28 @@ function buildNotesNodes(nodes) {
   return wrapper;
 }
 
-function updateOpenAncestorHeights(startChildren) {
+function getAncestorChildren(startChildren) {
+  const ancestors = [];
   let parentBranch = startChildren.parentElement.closest('.notes-branch');
 
   while (parentBranch) {
     const parentChildren = parentBranch.querySelector(':scope > .notes-children');
     if (parentBranch.classList.contains('is-open') && parentChildren) {
-      parentChildren.style.height = 'auto';
-      const fullHeight = parentChildren.scrollHeight;
-      parentChildren.style.height = `${fullHeight}px`;
+      ancestors.push(parentChildren);
     }
-
     parentBranch = parentBranch.parentElement.closest('.notes-branch');
   }
-}
 
-function animateAncestorHeightsAfterFrame(startChildren) {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      updateOpenAncestorHeights(startChildren);
-    });
-  });
+  return ancestors;
 }
 
 function openBranch(branch, children) {
+  const ancestors = getAncestorChildren(children);
+
+  ancestors.forEach(ancestor => {
+    ancestor.style.height = `${ancestor.scrollHeight}px`;
+  });
+
   branch.classList.add('is-open');
 
   children.style.height = '0px';
@@ -74,42 +72,74 @@ function openBranch(branch, children) {
   children.style.marginTop = '0';
 
   requestAnimationFrame(() => {
-    const endHeight = children.scrollHeight;
-    children.style.height = `${endHeight}px`;
+    const childTargetHeight = children.scrollHeight;
+    children.style.height = `${childTargetHeight}px`;
     children.style.opacity = '1';
     children.style.marginTop = '0.5rem';
+
+    ancestors.forEach(ancestor => {
+      ancestor.style.height = 'auto';
+      const targetHeight = ancestor.scrollHeight;
+      ancestor.style.height = `${targetHeight}px`;
+    });
   });
 
-  const onEnd = (e) => {
+  const onChildEnd = (e) => {
     if (e.propertyName !== 'height') return;
     children.style.height = 'auto';
-    children.removeEventListener('transitionend', onEnd);
-
-    animateAncestorHeightsAfterFrame(children);
+    children.removeEventListener('transitionend', onChildEnd);
   };
 
-  children.addEventListener('transitionend', onEnd);
+  children.addEventListener('transitionend', onChildEnd);
+
+  ancestors.forEach(ancestor => {
+    const onAncestorEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      ancestor.style.height = 'auto';
+      ancestor.removeEventListener('transitionend', onAncestorEnd);
+    };
+
+    ancestor.addEventListener('transitionend', onAncestorEnd);
+  });
 }
 
 function closeBranch(branch, children) {
-  const startHeight = children.scrollHeight;
-  children.style.height = `${startHeight}px`;
+  const ancestors = getAncestorChildren(children);
+
+  children.style.height = `${children.scrollHeight}px`;
+  ancestors.forEach(ancestor => {
+    ancestor.style.height = `${ancestor.scrollHeight}px`;
+  });
 
   requestAnimationFrame(() => {
     branch.classList.remove('is-open');
     children.style.height = '0px';
     children.style.opacity = '0';
     children.style.marginTop = '0';
+
+    ancestors.forEach(ancestor => {
+      ancestor.style.height = 'auto';
+      const targetHeight = ancestor.scrollHeight;
+      ancestor.style.height = `${targetHeight}px`;
+    });
   });
 
-  const onEnd = (e) => {
+  const onChildEnd = (e) => {
     if (e.propertyName !== 'height') return;
-    children.removeEventListener('transitionend', onEnd);
-
-    animateAncestorHeightsAfterFrame(children);
+    children.removeEventListener('transitionend', onChildEnd);
   };
 
-  children.addEventListener('transitionend', onEnd);
+  children.addEventListener('transitionend', onChildEnd);
+
+  ancestors.forEach(ancestor => {
+    const onAncestorEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      ancestor.style.height = 'auto';
+      ancestor.removeEventListener('transitionend', onAncestorEnd);
+    };
+
+    ancestor.addEventListener('transitionend', onAncestorEnd);
+  });
 }
 
 function toggleBranch(branch, children) {
