@@ -217,8 +217,8 @@ a {
   padding-left: 1rem;
   margin-top: 0.5rem;
   overflow: hidden;
-  height: auto;
-  opacity: 1;
+  height: 0;
+  opacity: 0;
   transition:
     height 0.48s cubic-bezier(.22, .61, .36, 1),
     opacity 0.38s cubic-bezier(.22, .61, .36, 1),
@@ -239,7 +239,7 @@ a {
 }
 
 .notes-toggle::before {
-  content: "▾";
+  content: "▸";
   color: var(--muted);
   font-size: 0.8rem;
   transition:
@@ -247,8 +247,8 @@ a {
     color 0.22s ease;
 }
 
-.notes-node:not(.is-open) > .notes-toggle::before {
-  transform: rotate(-90deg);
+.notes-node.is-open > .notes-toggle::before {
+  transform: rotate(90deg);
 }
 
 .notes-label {
