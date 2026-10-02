@@ -2,9 +2,9 @@
   --bg: #ddebd7;
   --heading: #1b1f1d;
   --body: #4f5a53;
-  --muted: #707872;
+  --muted: #7a827c;
   --accent: #a0587c;
-  --hover: rgba(160, 88, 124, 0.04);
+  --hover: rgba(160, 88, 124, 0.035);
 
   --font: "Inter", sans-serif;
 }
@@ -34,9 +34,9 @@ a {
 }
 
 .page {
-  width: min(760px, calc(100% - 2rem));
+  width: min(680px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2rem 0 5rem;
+  padding: 3rem 0 5rem;
 }
 
 .site-header {
@@ -54,7 +54,7 @@ a {
 
 .intro {
   margin-bottom: 5rem;
-  max-width: 42rem;
+  max-width: 38rem;
 }
 
 .intro-line {
@@ -71,7 +71,7 @@ a {
 }
 
 .section-head {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.15rem;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -83,7 +83,7 @@ a {
   color: var(--heading);
   font-size: 1rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 .section-head a {
@@ -94,12 +94,12 @@ a {
 
 .thought-list {
   display: grid;
-  gap: 0.1rem;
+  gap: 0.15rem;
 }
 
 .thought-item {
   display: block;
-  padding: 0.75rem 0.75rem;
+  padding: 0.65rem 0.75rem;
   margin: 0 -0.75rem;
   text-decoration: none;
   border-radius: 8px;
@@ -110,25 +110,40 @@ a {
   background: var(--hover);
 }
 
+.thought-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
 .thought-title {
-  display: block;
   color: var(--heading);
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: -0.01em;
-  line-height: 1.35;
+  line-height: 1.3;
+}
+
+.thought-dots {
+  border-bottom: 1px dotted rgba(27, 31, 29, 0.18);
+  transform: translateY(-0.15em);
 }
 
 .thought-meta {
-  display: block;
-  margin-top: 0.2rem;
-  color: var(--body);
-  font-size: 0.95rem;
+  color: var(--muted);
+  font-size: 0.92rem;
   font-weight: 400;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.thought-item:hover .thought-meta {
+  color: var(--heading);
 }
 
 .post-page {
-  max-width: 42rem;
+  max-width: 38rem;
 }
 
 .post-title {
@@ -151,7 +166,8 @@ a {
 
 @media (max-width: 700px) {
   .page {
-    padding-top: 1.25rem;
+    width: min(680px, calc(100% - 1.5rem));
+    padding-top: 2.5rem;
   }
 
   .site-header {
@@ -169,5 +185,14 @@ a {
   .section-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .thought-row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .thought-dots {
+    display: none;
   }
 }
