@@ -21,6 +21,7 @@ html {
 
 html,
 body {
+  min-height: 100%;
   overscroll-behavior-y: auto;
 }
 
@@ -42,6 +43,7 @@ a {
 
 .page-shell {
   width: min(900px, calc(100% - 2rem));
+  min-height: 100vh;
   margin: 0 auto;
   padding: 3rem 0 5rem;
   display: grid;
@@ -207,6 +209,7 @@ a {
   opacity: 1;
 }
 
+/* Notes tree */
 .notes-tree {
   display: grid;
   gap: 0.55rem;
@@ -254,9 +257,9 @@ a {
   margin-top: 0.5rem;
   padding-left: 1rem;
   border-left: 1px solid rgba(27, 31, 29, 0.12);
-
   opacity: 0;
   transform: translateY(-4px);
+  transform-origin: top;
   transition:
     opacity 0.28s cubic-bezier(.22, .61, .36, 1),
     transform 0.28s cubic-bezier(.22, .61, .36, 1);
