@@ -161,12 +161,12 @@ a {
 .essay-dots {
   height: 0.7em;
   align-self: center;
-  background-image: radial-gradient(circle, rgba(27, 31, 29, 0.45) 1.15px, transparent 1.25px);
+  background-image: radial-gradient(circle, rgba(27, 31, 29, 0.4) 1.15px, transparent 1.25px);
   background-size: 8px 8px;
   background-position: left center;
   background-repeat: repeat-x;
   transform: translateY(0.08em);
-  transition: filter 0.22s ease;
+  transition: filter 0.22s ease, opacity 0.22s ease;
 }
 
 .essay-meta {
@@ -174,16 +174,20 @@ a {
   font-size: 0.92rem;
   font-weight: 400;
   white-space: nowrap;
-  transition: color 0.28s ease;
+  transition: color 0.22s ease;
 }
 
-.essay-item:hover .essay-title,
+.essay-item:hover .essay-title {
+  color: #111311;
+}
+
 .essay-item:hover .essay-meta {
-  color: var(--heading);
+  color: #111311;
 }
 
 .essay-item:hover .essay-dots {
-  filter: brightness(0.45);
+  filter: brightness(0.12);
+  opacity: 1;
 }
 
 .notes-tree {
@@ -243,7 +247,7 @@ a {
 .notes-leaf:hover,
 .notes-toggle:hover .notes-label,
 .notes-toggle:hover::before {
-  color: var(--heading);
+  color: #111311;
 }
 
 .notes-node.collapsed > .notes-group {
