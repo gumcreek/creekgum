@@ -11,20 +11,20 @@ function buildNotesNodes(nodes) {
       toggle.type = 'button';
       toggle.innerHTML = `<span class="notes-label">${node.label}</span>`;
 
-      const children = document.createElement('div');
-      children.className = 'notes-children';
+      const panel = document.createElement('div');
+      panel.className = 'notes-panel';
 
       const inner = document.createElement('div');
-      inner.className = 'notes-children-inner';
+      inner.className = 'notes-panel-inner';
       inner.appendChild(buildNotesNodes(node.children));
-      children.appendChild(inner);
+      panel.appendChild(inner);
 
       toggle.addEventListener('click', () => {
-        toggleBranch(branch, children);
+        animateBranchToggle(branch);
       });
 
       branch.appendChild(toggle);
-      branch.appendChild(children);
+      branch.appendChild(panel);
       wrapper.appendChild(branch);
     } else {
       const leaf = document.createElement(node.url ? 'a' : 'div');
@@ -43,120 +43,95 @@ function buildNotesNodes(nodes) {
   return wrapper;
 }
 
-function getOpenAncestorChildren(startChildren) {
-  const ancestors = [];
-  let parentBranch = startChildren.parentElement.closest('.notes-branch');
+function getBranchPanel(branch) {
+  return branch.querySelector(':scope > .notes-panel');
+}
 
-  while (parentBranch) {
-    const parentChildren = parentBranch.querySelector(':scope > .notes-children');
-    if (parentBranch.classList.contains('is-open') && parentChildren) {
-      ancestors.push(parentChildren);
+function getOpenAncestorBranches(branch) {
+  const ancestors = [];
+  let current = branch.parentElement.closest('.notes-branch');
+
+  while (current) {
+    if (current.classList.contains('is-open')) {
+      ancestors.push(current);
     }
-    parentBranch = parentBranch.parentElement.closest('.notes-branch');
+    current = current.parentElement.closest('.notes-branch');
   }
 
   return ancestors;
 }
 
-function animatePanels(panels, endHeights, onComplete) {
-  panels.forEach((panel, i) => {
-    panel.style.height = `${panel.scrollHeight}px`;
-  });
-
-  requestAnimationFrame(() => {
-    panels.forEach((panel, i) => {
-      panel.style.height = `${endHeights[i]}px`;
-    });
-  });
-
-  let remaining = panels.length;
-
-  panels.forEach((panel) => {
-    const handler = (e) => {
-      if (e.propertyName !== 'height') return;
-      panel.removeEventListener('transitionend', handler);
-      remaining -= 1;
-
-      if (remaining === 0 && onComplete) {
-        onComplete();
-      }
-    };
-
-    panel.addEventListener('transitionend', handler);
-  });
+function freezePanelHeight(panel) {
+  panel.style.height = `${panel.scrollHeight}px`;
 }
 
-function openBranch(branch, children) {
-  const ancestors = getOpenAncestorChildren(children);
-  const panels = [children, ...ancestors];
-
-  branch.classList.add('is-open');
-
-  children.style.height = '0px';
-  children.style.opacity = '0';
-  children.style.marginTop = '0';
-
-  const endHeights = [
-    children.scrollHeight,
-    ...ancestors.map(panel => {
-      panel.style.height = 'auto';
-      return panel.scrollHeight;
-    })
-  ];
-
-  // restore explicit starting heights before animating
-  ancestors.forEach(panel => {
-    panel.style.height = `${panel.scrollHeight}px`;
-  });
-
-  requestAnimationFrame(() => {
-    children.style.opacity = '1';
-    children.style.marginTop = '0.5rem';
-
-    animatePanels(panels, endHeights, () => {
-      children.style.height = 'auto';
-      ancestors.forEach(panel => {
-        panel.style.height = 'auto';
-      });
-    });
-  });
+function resetPanelHeight(panel) {
+  panel.style.height = 'auto';
 }
 
-function closeBranch(branch, children) {
-  const ancestors = getOpenAncestorChildren(children);
-  const panels = [children, ...ancestors];
+function animateBranchToggle(branch) {
+  const panel = getBranchPanel(branch);
+  const ancestors = getOpenAncestorBranches(branch);
+  const affectedBranches = [branch, ...ancestors];
+  const affectedPanels = affectedBranches.map(getBranchPanel);
 
-  const endHeights = [
-    0,
-    ...ancestors.map(panel => {
-      panel.style.height = 'auto';
-      return panel.scrollHeight - children.scrollHeight;
-    })
-  ];
+  // Freeze all currently affected panel heights before changing state
+  affectedPanels.forEach(freezePanelHeight);
 
-  panels.forEach(panel => {
-    panel.style.height = `${panel.scrollHeight}px`;
-  });
+  // Force layout
+  panel.offsetHeight;
 
-  requestAnimationFrame(() => {
-    branch.classList.remove('is-open');
-    children.style.opacity = '0';
-    children.style.marginTop = '0';
+  const opening = !branch.classList.contains('is-open');
 
-    animatePanels(panels, endHeights, () => {
-      ancestors.forEach(panel => {
-        panel.style.height = 'auto';
-      });
-    });
-  });
-}
-
-function toggleBranch(branch, children) {
-  if (branch.classList.contains('is-open')) {
-    closeBranch(branch, children);
+  if (opening) {
+    branch.classList.add('is-open');
   } else {
-    openBranch(branch, children);
+    branch.classList.remove('is-open');
   }
+
+  requestAnimationFrame(() => {
+    // Measure target heights after state change
+    const targetHeights = affectedPanels.map(p => p.scrollHeight);
+
+    affectedPanels.forEach((p, i) => {
+      p.style.height = `${targetHeights[i]}px`;
+    });
+
+    if (opening) {
+      panel.style.opacity = '1';
+      panel.style.marginTop = '0.5rem';
+    } else {
+      panel.style.opacity = '0';
+      panel.style.marginTop = '0';
+    }
+
+    let remaining = affectedPanels.length;
+
+    affectedPanels.forEach((p, i) => {
+      const onEnd = (e) => {
+        if (e.propertyName !== 'height') return;
+
+        p.removeEventListener('transitionend', onEnd);
+        remaining -= 1;
+
+        if (remaining === 0) {
+          // Reset open panels to auto so nested content can grow naturally
+          affectedBranches.forEach((b) => {
+            if (b.classList.contains('is-open')) {
+              resetPanelHeight(getBranchPanel(b));
+            }
+          });
+
+          // Closed panel should stay at 0
+          if (!branch.classList.contains('is-open')) {
+            panel.style.height = '0px';
+          }
+        }
+      };
+
+      p.addEventListener('transitionend', onEnd);
+    });
+  });
 }
 
 function initNotePreview(container) {
