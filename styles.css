@@ -43,13 +43,17 @@ a {
 
 .page-shell {
   width: min(900px, calc(100% - 2rem));
-  min-height: 100vh;
   margin: 0 auto;
   padding: 3rem 0 5rem;
   display: grid;
   grid-template-columns: 90px minmax(0, 680px);
   column-gap: 2rem;
   align-items: start;
+}
+
+.notes-page-shell {
+  width: min(1180px, calc(100% - 2rem));
+  grid-template-columns: 90px minmax(0, 760px);
 }
 
 .side-nav {
@@ -209,30 +213,39 @@ a {
   opacity: 1;
 }
 
-/* Notes tree */
+/* Notes */
+.notes-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
 .notes-tree {
   display: grid;
   gap: 0.55rem;
 }
 
-.notes-node {
-  padding-left: 0;
+.notes-branch {
+  margin: 0;
 }
 
-.notes-toggle {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  font: inherit;
-  color: var(--heading);
+.notes-branch > summary {
+  list-style: none;
   cursor: pointer;
+  color: var(--heading);
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  transition: color 0.22s ease;
 }
 
-.notes-toggle::before {
+.notes-branch > summary::-webkit-details-marker {
+  display: none;
+}
+
+.notes-branch > summary::before {
   content: "▸";
   color: var(--muted);
   font-size: 0.8rem;
@@ -241,33 +254,20 @@ a {
     color 0.22s ease;
 }
 
-.notes-node.is-open > .notes-toggle::before {
+.notes-branch[open] > summary::before {
   transform: rotate(90deg);
 }
 
-.notes-label {
-  color: var(--heading);
-  font-weight: 500;
-  transition: color 0.22s ease;
-}
-
-.notes-toggle:hover .notes-label,
-.notes-toggle:hover::before {
+.notes-branch > summary:hover,
+.notes-branch > summary:hover::before {
   color: #111311;
 }
 
 .notes-children {
   margin-left: 0.35rem;
+  margin-top: 0.5rem;
   padding-left: 1rem;
   border-left: 1px solid rgba(27, 31, 29, 0.12);
-  overflow: hidden;
-  height: 0;
-  opacity: 0;
-  margin-top: 0;
-  transition:
-    height 0.42s cubic-bezier(.22, .61, .36, 1),
-    opacity 0.32s ease,
-    margin-top 0.32s ease;
 }
 
 .notes-leaf {
@@ -276,10 +276,52 @@ a {
   color: var(--body);
   padding: 0.15rem 0;
   transition: color 0.22s ease;
+  cursor: default;
 }
 
 .notes-leaf:hover {
   color: #111311;
+}
+
+.note-preview {
+  position: sticky;
+  top: 3rem;
+  min-height: 120px;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition:
+    opacity 0.28s cubic-bezier(.22, .61, .36, 1),
+    transform 0.28s cubic-bezier(.22, .61, .36, 1);
+}
+
+.note-preview.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.note-preview-inner {
+  padding-top: 0.15rem;
+}
+
+.note-preview-date {
+  color: var(--muted);
+  font-size: 0.84rem;
+  margin-bottom: 0.45rem;
+}
+
+.note-preview-title {
+  color: var(--heading);
+  font-size: 0.98rem;
+  font-weight: 500;
+  margin-bottom: 0.45rem;
+}
+
+.note-preview-body {
+  color: var(--body);
+  font-size: 0.96rem;
+  line-height: 1.5;
 }
 
 .post-page {
@@ -304,8 +346,24 @@ a {
   margin: 1.2rem 0;
 }
 
+@media (max-width: 980px) {
+  .notes-page-shell {
+    width: min(900px, calc(100% - 2rem));
+    grid-template-columns: 90px minmax(0, 680px);
+  }
+
+  .notes-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .note-preview {
+    display: none;
+  }
+}
+
 @media (max-width: 800px) {
-  .page-shell {
+  .page-shell,
+  .notes-page-shell {
     width: min(680px, calc(100% - 1.5rem));
     grid-template-columns: 1fr;
     row-gap: 1.5rem;
