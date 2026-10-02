@@ -1,0 +1,32 @@
+[
+  {
+    "title": "First essay",
+    "date": "10.01.2026",
+    "url": "essays/first-essay.html"
+  },
+  {
+    "title": "Second essay",
+    "date": "10.03.2026",
+    "url": "essays/second-essay.html"
+  },
+  {
+    "title": "Third essay",
+    "date": "10.05.2026",
+    "url": "essays/third-essay.html"
+  },
+  {
+    "title": "Fourth essay",
+    "date": "10.08.2026",
+    "url": "essays/fourth-essay.html"
+  },
+  {
+    "title": "Fifth essay",
+    "date": "10.10.2026",
+    "url": "essays/fifth-essay.html"
+  },
+  {
+    "title": "Sixth essay",
+    "date": "10.12.2026",
+    "url": "essays/sixth-essay.html"
+  }
+]
