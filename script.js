@@ -68,6 +68,73 @@ function buildNotesNodes(nodes) {
   return wrapper;
 }
 
+function animateDetails(details) {
+  const summary = details.querySelector('summary');
+  const content = details.querySelector('.notes-children');
+  if (!summary || !content) return;
+
+  let isClosing = false;
+  let isExpanding = false;
+
+  summary.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const startHeight = `${details.offsetHeight}px`;
+    const endHeight = `${summary.offsetHeight + (details.open ? 0 : content.offsetHeight)}px`;
+
+    if (isClosing || !details.open) {
+      open();
+    } else if (isExpanding || details.open) {
+      close();
+    }
+
+    function close() {
+      isClosing = true;
+
+      const currentHeight = `${details.offsetHeight}px`;
+      details.style.height = currentHeight;
+
+      requestAnimationFrame(() => {
+        details.style.height = `${summary.offsetHeight}px`;
+      });
+    }
+
+    function open() {
+      details.style.height = `${details.offsetHeight}px`;
+      details.open = true;
+
+      requestAnimationFrame(() => {
+        isExpanding = true;
+        details.style.height = `${summary.offsetHeight + content.offsetHeight}px`;
+      });
+    }
+
+    function onAnimationEnd(e) {
+      if (e.propertyName !== 'height') return;
+
+      details.style.height = '';
+      isClosing = false;
+      isExpanding = false;
+
+      if (!details.open) {
+        details.open = false;
+      }
+
+      if (details.offsetHeight === summary.offsetHeight) {
+        details.open = false;
+      }
+
+      details.removeEventListener('transitionend', onAnimationEnd);
+    }
+
+    details.addEventListener('transitionend', onAnimationEnd);
+
+    if (details.open && !isExpanding && !isClosing) {
+      details.style.height = endHeight;
+    }
+  });
+}
+
 async function loadNotesTree() {
   const container = document.getElementById('notes-tree');
   if (!container) return;
@@ -78,6 +145,8 @@ async function loadNotesTree() {
 
     const data = await response.json();
     container.appendChild(buildNotesNodes(data));
+
+    container.querySelectorAll('.notes-branch').forEach(animateDetails);
   } catch (error) {
     console.error(error);
     container.innerHTML = '<p class="essay-meta">Could not load notes.</p>';
