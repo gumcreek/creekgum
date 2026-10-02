@@ -1,7 +1,7 @@
 :root {
   --bg: #ddebd7;
   --heading: #1b1f1d;
-  --body: #5d655f;
+  --body: #4f5a53;
   --muted: #707872;
   --accent: #a0587c;
   --hover: rgba(160, 88, 124, 0.04);
@@ -48,7 +48,7 @@ a {
   text-decoration: none;
   color: var(--heading);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
@@ -59,9 +59,9 @@ a {
 
 .intro-line {
   margin: 0;
-  color: var(--heading);
+  color: var(--body);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.4;
 }
@@ -82,7 +82,7 @@ a {
   margin: 0;
   color: var(--heading);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
