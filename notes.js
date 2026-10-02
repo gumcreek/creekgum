@@ -59,8 +59,8 @@ function getOpenAncestorBranches(branch) {
   return ancestors;
 }
 
-function freezePanelHeight(panel) {
-  panel.style.height = `${panel.scrollHeight}px`;
+function setPanelHeight(panel, px) {
+  panel.style.height = `${px}px`;
 }
 
 function resetPanelHeight(panel) {
@@ -68,71 +68,111 @@ function resetPanelHeight(panel) {
 }
 
 function animateBranchToggle(branch) {
+  if (branch.dataset.animating === 'true') return;
+
   const panel = getBranchPanel(branch);
   if (!panel) return;
 
   const ancestors = getOpenAncestorBranches(branch);
-  const affectedBranches = [branch, ...ancestors];
-  const affectedPanels = affectedBranches.map(getBranchPanel);
-  const startHeights = affectedPanels.map(p => p.getBoundingClientRect().height);
   const opening = !branch.classList.contains('is-open');
 
-  // Freeze current rendered heights before state change
-  affectedPanels.forEach((p, i) => {
-    p.style.height = `${startHeights[i]}px`;
+  branch.dataset.animating = 'true';
+
+  // Freeze ancestor heights at their current rendered size so they can animate too.
+  ancestors.forEach(ancestor => {
+    const ancestorPanel = getBranchPanel(ancestor);
+    if (!ancestorPanel) return;
+    setPanelHeight(ancestorPanel, ancestorPanel.getBoundingClientRect().height);
   });
 
-  // Force layout
-  panel.offsetHeight;
-
-  // Toggle state
   if (opening) {
+    // Start closed at 0
+    setPanelHeight(panel, 0);
+
+    // Force layout
+    panel.offsetHeight;
+
+    // Open branch so opacity/margin styles apply and content becomes measurable
     branch.classList.add('is-open');
-  } else {
-    branch.classList.remove('is-open');
-  }
 
-  // Measure destination heights after state change
-  const endHeights = affectedPanels.map(p => p.scrollHeight);
+    const targetHeight = panel.scrollHeight;
 
-  requestAnimationFrame(() => {
-    affectedPanels.forEach((p, i) => {
-      p.style.height = `${endHeights[i]}px`;
+    requestAnimationFrame(() => {
+      setPanelHeight(panel, targetHeight);
+
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (!ancestorPanel) return;
+        setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
+      });
     });
-  });
 
-  let remaining = affectedPanels.length;
-  let finished = false;
-
-  const finish = () => {
-    if (finished) return;
-    finished = true;
-
-    affectedBranches.forEach((b) => {
-      const p = getBranchPanel(b);
-      if (!p) return;
-
-      if (b.classList.contains('is-open')) {
-        resetPanelHeight(p);
-      } else {
-        p.style.height = '0px';
-      }
-    });
-  };
-
-  affectedPanels.forEach((p) => {
     const onEnd = (e) => {
       if (e.propertyName !== 'height') return;
-      p.removeEventListener('transitionend', onEnd);
-      remaining -= 1;
-      if (remaining === 0) finish();
+      panel.removeEventListener('transitionend', onEnd);
+
+      resetPanelHeight(panel);
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel && ancestor.classList.contains('is-open')) {
+          resetPanelHeight(ancestorPanel);
+        }
+      });
+
+      delete branch.dataset.animating;
     };
 
-    p.addEventListener('transitionend', onEnd);
-  });
+    panel.addEventListener('transitionend', onEnd);
+  } else {
+    const currentHeight = panel.getBoundingClientRect().height;
+    setPanelHeight(panel, currentHeight);
 
-  // Fallback in case a transition event is missed
-  setTimeout(finish, 500);
+    // Force layout
+    panel.offsetHeight;
+
+    // Measure ancestors before closing so we know their current open height
+    ancestors.forEach(ancestor => {
+      const ancestorPanel = getBranchPanel(ancestor);
+      if (!ancestorPanel) return;
+      setPanelHeight(ancestorPanel, ancestorPanel.getBoundingClientRect().height);
+    });
+
+    // Remove open state before measuring end heights
+    branch.classList.remove('is-open');
+
+    const targetHeight = 0;
+    const ancestorTargetHeights = ancestors.map(ancestor => {
+      const ancestorPanel = getBranchPanel(ancestor);
+      return ancestorPanel ? ancestorPanel.scrollHeight : 0;
+    });
+
+    requestAnimationFrame(() => {
+      setPanelHeight(panel, targetHeight);
+
+      ancestors.forEach((ancestor, i) => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (!ancestorPanel) return;
+        setPanelHeight(ancestorPanel, ancestorTargetHeights[i]);
+      });
+    });
+
+    const onEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      panel.removeEventListener('transitionend', onEnd);
+
+      panel.style.height = '0px';
+      ancestors.forEach(ancestor => {
+        const ancestorPanel = getBranchPanel(ancestor);
+        if (ancestorPanel && ancestor.classList.contains('is-open')) {
+          resetPanelHeight(ancestorPanel);
+        }
+      });
+
+      delete branch.dataset.animating;
+    };
+
+    panel.addEventListener('transitionend', onEnd);
+  }
 }
 
 function initNotePreview(container) {
