@@ -1,12 +1,12 @@
 :root {
   --bg: #ddebd7;
-  --text: #1c231d;
-  --body: #4f5b52;
-  --muted: #728076;
+  --heading: #1b1f1d;
+  --body: #5d655f;
+  --muted: #707872;
   --accent: #a0587c;
-  --hover: rgba(160, 88, 124, 0.06);
+  --hover: rgba(160, 88, 124, 0.04);
 
-  --font: "IBM Plex Sans", sans-serif;
+  --font: "Inter", sans-serif;
 }
 
 * {
@@ -20,15 +20,15 @@ html {
 body {
   margin: 0;
   background: var(--bg);
-  color: var(--text);
+  color: var(--body);
   font-family: var(--font);
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
-  text-decoration-color: color-mix(in srgb, var(--accent) 65%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--accent) 60%, transparent);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
@@ -40,37 +40,38 @@ a {
 }
 
 .site-header {
-  margin-bottom: 3.5rem;
+  margin-bottom: 5.5rem;
 }
 
 .site-name {
+  display: inline-block;
   text-decoration: none;
-  font-size: 0.98rem;
-  font-weight: 600;
+  color: var(--heading);
+  font-size: 1rem;
+  font-weight: 500;
   letter-spacing: -0.01em;
-  color: var(--text);
 }
 
 .intro {
-  margin-bottom: 3.5rem;
+  margin-bottom: 5rem;
   max-width: 42rem;
 }
 
 .intro-line {
   margin: 0;
-  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
-  line-height: 1.18;
+  color: var(--heading);
+  font-size: 1rem;
   font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
 }
 
 .section {
-  margin-top: 3.25rem;
+  margin-top: 5rem;
 }
 
 .section-head {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -79,32 +80,30 @@ a {
 
 .section-head h2 {
   margin: 0;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
+  color: var(--heading);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .section-head a {
   color: var(--muted);
-  font-size: 0.88rem;
-  font-weight: 500;
+  font-size: 0.95rem;
   text-decoration: none;
 }
 
 .thought-list {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.1rem;
 }
 
 .thought-item {
   display: block;
-  padding: 0.7rem 0.75rem;
+  padding: 0.75rem 0.75rem;
   margin: 0 -0.75rem;
   text-decoration: none;
   border-radius: 8px;
-  transition: background-color 0.32s ease;
+  transition: background-color 0.3s ease;
 }
 
 .thought-item:hover {
@@ -113,18 +112,18 @@ a {
 
 .thought-title {
   display: block;
-  font-size: 1.02rem;
-  font-weight: 600;
+  color: var(--heading);
+  font-size: 1rem;
+  font-weight: 500;
   letter-spacing: -0.01em;
-  line-height: 1.3;
-  color: var(--text);
+  line-height: 1.35;
 }
 
 .thought-meta {
   display: block;
-  margin-top: 0.18rem;
-  color: var(--muted);
-  font-size: 0.88rem;
+  margin-top: 0.2rem;
+  color: var(--body);
+  font-size: 0.95rem;
   font-weight: 400;
 }
 
@@ -133,21 +132,21 @@ a {
 }
 
 .post-title {
-  margin: 0.4rem 0 1.2rem;
-  font-size: clamp(2rem, 5vw, 3.1rem);
-  line-height: 1.05;
+  margin: 0.4rem 0 1.25rem;
+  color: var(--heading);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.08;
   letter-spacing: -0.03em;
-  font-weight: 600;
-  color: var(--text);
+  font-weight: 500;
 }
 
 .post-body {
   color: var(--body);
-  font-size: 1.05rem;
+  font-size: 1.02rem;
 }
 
 .post-body p {
-  margin: 1.15rem 0;
+  margin: 1.2rem 0;
 }
 
 @media (max-width: 700px) {
@@ -156,11 +155,15 @@ a {
   }
 
   .site-header {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
 
   .intro {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .section {
+    margin-top: 4rem;
   }
 
   .section-head {
