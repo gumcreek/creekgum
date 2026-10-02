@@ -44,12 +44,16 @@ function toggleNotesGroup(nodeEl, group) {
   if (isCollapsed) {
     nodeEl.classList.remove('collapsed');
 
-    const fullHeight = group.scrollHeight;
-
+    group.style.display = 'block';
     group.style.height = '0px';
+    group.style.opacity = '0';
+
+    const fullHeight = group.scrollHeight;
 
     requestAnimationFrame(() => {
       group.style.height = fullHeight + 'px';
+      group.style.opacity = '1';
+      group.style.marginTop = '0.5rem';
     });
 
     const onExpandEnd = (e) => {
@@ -61,11 +65,23 @@ function toggleNotesGroup(nodeEl, group) {
     group.addEventListener('transitionend', onExpandEnd);
   } else {
     group.style.height = group.scrollHeight + 'px';
+    group.style.opacity = '1';
+    group.style.marginTop = '0.5rem';
 
     requestAnimationFrame(() => {
-      nodeEl.classList.add('collapsed');
       group.style.height = '0px';
+      group.style.opacity = '0';
+      group.style.marginTop = '0';
     });
+
+    const onCollapseEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      nodeEl.classList.add('collapsed');
+      group.style.display = 'block';
+      group.removeEventListener('transitionend', onCollapseEnd);
+    };
+
+    group.addEventListener('transitionend', onCollapseEnd);
   }
 }
 
