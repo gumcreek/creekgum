@@ -59,8 +59,8 @@ function getOpenAncestorBranches(branch) {
   return ancestors;
 }
 
-function setPanelHeight(panel, height) {
-  panel.style.height = `${height}px`;
+function freezePanelHeight(panel) {
+  panel.style.height = `${panel.scrollHeight}px`;
 }
 
 function resetPanelHeight(panel) {
@@ -72,102 +72,67 @@ function animateBranchToggle(branch) {
   if (!panel) return;
 
   const ancestors = getOpenAncestorBranches(branch);
-  const isOpening = !branch.classList.contains('is-open');
+  const affectedBranches = [branch, ...ancestors];
+  const affectedPanels = affectedBranches.map(getBranchPanel);
+  const startHeights = affectedPanels.map(p => p.getBoundingClientRect().height);
+  const opening = !branch.classList.contains('is-open');
 
-  const startHeight = panel.getBoundingClientRect().height;
-
-  // Freeze open ancestor heights before changing anything
-  ancestors.forEach(ancestor => {
-    const ancestorPanel = getBranchPanel(ancestor);
-    if (ancestorPanel) {
-      setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
-    }
+  // Freeze current rendered heights before state change
+  affectedPanels.forEach((p, i) => {
+    p.style.height = `${startHeights[i]}px`;
   });
-
-  // Freeze the current panel height too
-  setPanelHeight(panel, startHeight);
 
   // Force layout
   panel.offsetHeight;
 
-  if (isOpening) {
+  // Toggle state
+  if (opening) {
     branch.classList.add('is-open');
-    const targetHeight = panel.scrollHeight;
-
-    let rafId = null;
-    const tickAncestors = () => {
-      ancestors.forEach(ancestor => {
-        const ancestorPanel = getBranchPanel(ancestor);
-        if (ancestorPanel) {
-          setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
-        }
-      });
-      rafId = requestAnimationFrame(tickAncestors);
-    };
-
-    rafId = requestAnimationFrame(tickAncestors);
-
-    requestAnimationFrame(() => {
-      setPanelHeight(panel, targetHeight);
-    });
-
-    const onEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      panel.removeEventListener('transitionend', onEnd);
-      if (rafId) cancelAnimationFrame(rafId);
-
-      resetPanelHeight(panel);
-      ancestors.forEach(ancestor => {
-        const ancestorPanel = getBranchPanel(ancestor);
-        if (ancestorPanel && ancestor.classList.contains('is-open')) {
-          resetPanelHeight(ancestorPanel);
-        }
-      });
-    };
-
-    panel.addEventListener('transitionend', onEnd);
   } else {
-    const openHeight = panel.scrollHeight;
-    setPanelHeight(panel, openHeight);
-
-    // Force layout before collapsing
-    panel.offsetHeight;
-
-    let rafId = null;
-    const tickAncestors = () => {
-      ancestors.forEach(ancestor => {
-        const ancestorPanel = getBranchPanel(ancestor);
-        if (ancestorPanel) {
-          setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
-        }
-      });
-      rafId = requestAnimationFrame(tickAncestors);
-    };
-
-    rafId = requestAnimationFrame(tickAncestors);
-
     branch.classList.remove('is-open');
+  }
 
-    requestAnimationFrame(() => {
-      setPanelHeight(panel, 0);
+  // Measure destination heights after state change
+  const endHeights = affectedPanels.map(p => p.scrollHeight);
+
+  requestAnimationFrame(() => {
+    affectedPanels.forEach((p, i) => {
+      p.style.height = `${endHeights[i]}px`;
     });
+  });
 
+  let remaining = affectedPanels.length;
+  let finished = false;
+
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+
+    affectedBranches.forEach((b) => {
+      const p = getBranchPanel(b);
+      if (!p) return;
+
+      if (b.classList.contains('is-open')) {
+        resetPanelHeight(p);
+      } else {
+        p.style.height = '0px';
+      }
+    });
+  };
+
+  affectedPanels.forEach((p) => {
     const onEnd = (e) => {
       if (e.propertyName !== 'height') return;
-      panel.removeEventListener('transitionend', onEnd);
-      if (rafId) cancelAnimationFrame(rafId);
-
-      panel.style.height = '0px';
-      ancestors.forEach(ancestor => {
-        const ancestorPanel = getBranchPanel(ancestor);
-        if (ancestorPanel && ancestor.classList.contains('is-open')) {
-          resetPanelHeight(ancestorPanel);
-        }
-      });
+      p.removeEventListener('transitionend', onEnd);
+      remaining -= 1;
+      if (remaining === 0) finish();
     };
 
-    panel.addEventListener('transitionend', onEnd);
-  }
+    p.addEventListener('transitionend', onEnd);
+  });
+
+  // Fallback in case a transition event is missed
+  setTimeout(finish, 500);
 }
 
 function initNotePreview(container) {
