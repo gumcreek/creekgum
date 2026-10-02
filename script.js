@@ -10,7 +10,6 @@ function createEssayItem(essay) {
   const item = document.createElement('a');
   item.className = 'essay-item';
   item.href = essay.url || '#';
-
   item.innerHTML = `
     <div class="essay-row">
       <span class="essay-title">${essay.title || 'Untitled'}</span>
@@ -18,7 +17,6 @@ function createEssayItem(essay) {
       <span class="essay-meta">${essay.date || ''}</span>
     </div>
   `;
-
   return item;
 }
 
@@ -56,7 +54,6 @@ async function initEssays() {
     renderEssays(essays, 'all-essays');
   } catch (error) {
     console.error(error);
-
     ['recent-essays', 'all-essays'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.innerHTML = '<p class="essay-meta">Could not load essays.</p>';
