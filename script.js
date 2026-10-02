@@ -38,104 +38,24 @@ function renderEssays(essays, containerId, limit = null) {
   });
 }
 
-function updateAncestorHeights(group) {
-  requestAnimationFrame(() => {
-    let currentGroup = group.parentElement.closest('.notes-group');
-
-    while (currentGroup) {
-      const currentNode = currentGroup.parentElement;
-
-      if (currentNode.classList.contains('is-open')) {
-        currentGroup.style.height = 'auto';
-        const nextHeight = currentGroup.scrollHeight;
-        currentGroup.style.height = `${nextHeight}px`;
-      }
-
-      currentGroup = currentGroup.parentElement.closest('.notes-group');
-    }
-  });
-}
-
-function setGroupOpen(nodeEl, group) {
-  nodeEl.classList.add('is-open');
-
-  group.style.display = 'block';
-  group.style.height = '0px';
-  group.style.opacity = '0';
-  group.style.marginTop = '0';
-
-  requestAnimationFrame(() => {
-    const targetHeight = group.scrollHeight;
-    group.style.height = `${targetHeight}px`;
-    group.style.opacity = '1';
-    group.style.marginTop = '0.5rem';
-
-    updateAncestorHeights(group);
-  });
-
-  const onEnd = (e) => {
-    if (e.propertyName !== 'height') return;
-    group.style.height = 'auto';
-    group.removeEventListener('transitionend', onEnd);
-  };
-
-  group.addEventListener('transitionend', onEnd);
-}
-
-function setGroupClosed(nodeEl, group) {
-  const startHeight = group.scrollHeight;
-  group.style.height = `${startHeight}px`;
-  group.style.opacity = '1';
-  group.style.marginTop = '0.5rem';
-
-  requestAnimationFrame(() => {
-    nodeEl.classList.remove('is-open');
-    group.style.height = '0px';
-    group.style.opacity = '0';
-    group.style.marginTop = '0';
-
-    updateAncestorHeights(group);
-  });
-}
-
-function toggleNotesGroup(nodeEl, group) {
-  const isOpen = nodeEl.classList.contains('is-open');
-
-  if (isOpen) {
-    setGroupClosed(nodeEl, group);
-  } else {
-    setGroupOpen(nodeEl, group);
-  }
-}
-
 function buildNotesNodes(nodes) {
   const wrapper = document.createElement('div');
 
   nodes.forEach(node => {
     if (node.children && node.children.length) {
-      const nodeEl = document.createElement('div');
-      nodeEl.className = 'notes-node';
+      const branch = document.createElement('details');
+      branch.className = 'notes-branch';
 
-      const toggle = document.createElement('button');
-      toggle.className = 'notes-toggle';
-      toggle.type = 'button';
-      toggle.innerHTML = `<span class="notes-label">${node.label}</span>`;
+      const summary = document.createElement('summary');
+      summary.textContent = node.label;
 
-      const group = document.createElement('div');
-      group.className = 'notes-group';
-      group.appendChild(buildNotesNodes(node.children));
+      const children = document.createElement('div');
+      children.className = 'notes-children';
+      children.appendChild(buildNotesNodes(node.children));
 
-      group.style.height = '0px';
-      group.style.opacity = '0';
-      group.style.marginTop = '0';
-
-      toggle.addEventListener('click', () => {
-        toggleNotesGroup(nodeEl, group);
-      });
-
-      nodeEl.appendChild(toggle);
-      nodeEl.appendChild(group);
-      wrapper.appendChild(nodeEl);
+      branch.appendChild(summary);
+      branch.appendChild(children);
+      wrapper.appendChild(branch);
     } else {
       const leaf = document.createElement(node.url ? 'a' : 'div');
       leaf.className = 'notes-leaf';
