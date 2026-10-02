@@ -59,9 +59,7 @@ function initNotePreview(container) {
   function scheduleHide() {
     clearTimeout(hideTimeout);
     hideTimeout = setTimeout(() => {
-      if (!locked) {
-        preview.classList.remove('visible');
-      }
+      if (!locked) preview.classList.remove('visible');
     }, 180);
   }
 
