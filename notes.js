@@ -43,7 +43,7 @@ function buildNotesNodes(nodes) {
   return wrapper;
 }
 
-function getAncestorChildren(startChildren) {
+function getOpenAncestorChildren(startChildren) {
   const ancestors = [];
   let parentBranch = startChildren.parentElement.closest('.notes-branch');
 
@@ -58,12 +58,37 @@ function getAncestorChildren(startChildren) {
   return ancestors;
 }
 
-function openBranch(branch, children) {
-  const ancestors = getAncestorChildren(children);
-
-  ancestors.forEach(ancestor => {
-    ancestor.style.height = `${ancestor.scrollHeight}px`;
+function animatePanels(panels, endHeights, onComplete) {
+  panels.forEach((panel, i) => {
+    panel.style.height = `${panel.scrollHeight}px`;
   });
+
+  requestAnimationFrame(() => {
+    panels.forEach((panel, i) => {
+      panel.style.height = `${endHeights[i]}px`;
+    });
+  });
+
+  let remaining = panels.length;
+
+  panels.forEach((panel) => {
+    const handler = (e) => {
+      if (e.propertyName !== 'height') return;
+      panel.removeEventListener('transitionend', handler);
+      remaining -= 1;
+
+      if (remaining === 0 && onComplete) {
+        onComplete();
+      }
+    };
+
+    panel.addEventListener('transitionend', handler);
+  });
+}
+
+function openBranch(branch, children) {
+  const ancestors = getOpenAncestorChildren(children);
+  const panels = [children, ...ancestors];
 
   branch.classList.add('is-open');
 
@@ -71,81 +96,63 @@ function openBranch(branch, children) {
   children.style.opacity = '0';
   children.style.marginTop = '0';
 
+  const endHeights = [
+    children.scrollHeight,
+    ...ancestors.map(panel => {
+      panel.style.height = 'auto';
+      return panel.scrollHeight;
+    })
+  ];
+
+  // restore explicit starting heights before animating
+  ancestors.forEach(panel => {
+    panel.style.height = `${panel.scrollHeight}px`;
+  });
+
   requestAnimationFrame(() => {
-    const childTargetHeight = children.scrollHeight;
-    children.style.height = `${childTargetHeight}px`;
     children.style.opacity = '1';
     children.style.marginTop = '0.5rem';
 
-    ancestors.forEach(ancestor => {
-      ancestor.style.height = 'auto';
-      const targetHeight = ancestor.scrollHeight;
-      ancestor.style.height = `${targetHeight}px`;
+    animatePanels(panels, endHeights, () => {
+      children.style.height = 'auto';
+      ancestors.forEach(panel => {
+        panel.style.height = 'auto';
+      });
     });
-  });
-
-  const onChildEnd = (e) => {
-    if (e.propertyName !== 'height') return;
-    children.style.height = 'auto';
-    children.removeEventListener('transitionend', onChildEnd);
-  };
-
-  children.addEventListener('transitionend', onChildEnd);
-
-  ancestors.forEach(ancestor => {
-    const onAncestorEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      ancestor.style.height = 'auto';
-      ancestor.removeEventListener('transitionend', onAncestorEnd);
-    };
-
-    ancestor.addEventListener('transitionend', onAncestorEnd);
   });
 }
 
 function closeBranch(branch, children) {
-  const ancestors = getAncestorChildren(children);
+  const ancestors = getOpenAncestorChildren(children);
+  const panels = [children, ...ancestors];
 
-  children.style.height = `${children.scrollHeight}px`;
-  ancestors.forEach(ancestor => {
-    ancestor.style.height = `${ancestor.scrollHeight}px`;
+  const endHeights = [
+    0,
+    ...ancestors.map(panel => {
+      panel.style.height = 'auto';
+      return panel.scrollHeight - children.scrollHeight;
+    })
+  ];
+
+  panels.forEach(panel => {
+    panel.style.height = `${panel.scrollHeight}px`;
   });
 
   requestAnimationFrame(() => {
     branch.classList.remove('is-open');
-    children.style.height = '0px';
     children.style.opacity = '0';
     children.style.marginTop = '0';
 
-    ancestors.forEach(ancestor => {
-      ancestor.style.height = 'auto';
-      const targetHeight = ancestor.scrollHeight;
-      ancestor.style.height = `${targetHeight}px`;
+    animatePanels(panels, endHeights, () => {
+      ancestors.forEach(panel => {
+        panel.style.height = 'auto';
+      });
     });
-  });
-
-  const onChildEnd = (e) => {
-    if (e.propertyName !== 'height') return;
-    children.removeEventListener('transitionend', onChildEnd);
-  };
-
-  children.addEventListener('transitionend', onChildEnd);
-
-  ancestors.forEach(ancestor => {
-    const onAncestorEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      ancestor.style.height = 'auto';
-      ancestor.removeEventListener('transitionend', onAncestorEnd);
-    };
-
-    ancestor.addEventListener('transitionend', onAncestorEnd);
   });
 }
 
 function toggleBranch(branch, children) {
-  const isOpen = branch.classList.contains('is-open');
-
-  if (isOpen) {
+  if (branch.classList.contains('is-open')) {
     closeBranch(branch, children);
   } else {
     openBranch(branch, children);
