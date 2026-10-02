@@ -217,11 +217,12 @@ a {
   padding-left: 1rem;
   margin-top: 0.5rem;
   overflow: hidden;
-  max-height: 1000px;
+  height: auto;
   opacity: 1;
   transition:
-    max-height 0.42s cubic-bezier(.22, .61, .36, 1),
-    opacity 0.28s ease;
+    height 0.42s cubic-bezier(.22, .61, .36, 1),
+    opacity 0.26s ease,
+    margin-top 0.26s ease;
 }
 
 .notes-toggle {
@@ -271,10 +272,10 @@ a {
 }
 
 .notes-node.collapsed > .notes-group {
-  max-height: 0;
   opacity: 0;
   margin-top: 0;
 }
+
 .post-page {
   max-width: 38rem;
 }
