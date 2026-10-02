@@ -43,35 +43,46 @@ function buildNotesNodes(nodes) {
   return wrapper;
 }
 
-function updateAncestorHeights(element) {
-  let parentChildren = element.parentElement.closest('.notes-children');
+function animateAncestorHeights(fromChildren) {
+  let ancestorChildren = fromChildren.parentElement.closest('.notes-children');
 
-  while (parentChildren) {
-    const parentBranch = parentChildren.closest('.notes-branch');
+  while (ancestorChildren) {
+    const ancestorBranch = ancestorChildren.closest('.notes-branch');
+    if (ancestorBranch && ancestorBranch.classList.contains('is-open')) {
+      const startHeight = ancestorChildren.offsetHeight;
+      ancestorChildren.style.height = `${startHeight}px`;
 
-    if (parentBranch && parentBranch.classList.contains('is-open')) {
-      parentChildren.style.height = 'auto';
-      const nextHeight = parentChildren.scrollHeight;
-      parentChildren.style.height = `${nextHeight}px`;
+      requestAnimationFrame(() => {
+        const endHeight = ancestorChildren.scrollHeight;
+        ancestorChildren.style.height = `${endHeight}px`;
+      });
+
+      const onEnd = (e) => {
+        if (e.propertyName !== 'height') return;
+        ancestorChildren.style.height = 'auto';
+        ancestorChildren.removeEventListener('transitionend', onEnd);
+      };
+
+      ancestorChildren.addEventListener('transitionend', onEnd);
     }
 
-    parentChildren = parentChildren.parentElement.closest('.notes-children');
+    ancestorChildren = ancestorChildren.parentElement.closest('.notes-children');
   }
 }
 
 function openBranch(branch, children) {
   branch.classList.add('is-open');
 
-  const startHeight = children.offsetHeight;
-  const endHeight = children.scrollHeight;
-
-  children.style.height = `${startHeight}px`;
+  children.style.height = '0px';
+  children.style.opacity = '0';
+  children.style.marginTop = '0';
 
   requestAnimationFrame(() => {
+    const endHeight = children.scrollHeight;
     children.style.height = `${endHeight}px`;
     children.style.opacity = '1';
     children.style.marginTop = '0.5rem';
-    updateAncestorHeights(children);
+    animateAncestorHeights(children);
   });
 
   const onEnd = (e) => {
@@ -92,7 +103,7 @@ function closeBranch(branch, children) {
     children.style.height = '0px';
     children.style.opacity = '0';
     children.style.marginTop = '0';
-    updateAncestorHeights(children);
+    animateAncestorHeights(children);
   });
 }
 
