@@ -272,7 +272,6 @@ a {
 }
 
 .notes-node.collapsed > .notes-group {
-  opacity: 0;
   margin-top: 0;
 }
 
