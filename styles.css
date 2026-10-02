@@ -166,7 +166,7 @@ a {
   background-position: left center;
   background-repeat: repeat-x;
   transform: translateY(0.08em);
-  transition: filter 0.22s ease, opacity 0.22s ease;
+  transition: background-image 0.22s ease;
 }
 
 .essay-meta {
@@ -186,8 +186,7 @@ a {
 }
 
 .essay-item:hover .essay-dots {
-  filter: brightness(0.12);
-  opacity: 1;
+  background-image: radial-gradient(circle, rgb(0, 0, 0) 1.15px, transparent 1.25px);
 }
 
 .notes-tree {
