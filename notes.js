@@ -78,96 +78,94 @@ function animateBranchToggle(branch) {
 
   branch.dataset.animating = 'true';
 
-  // Freeze ancestor heights at their current rendered size so they can animate too.
-  ancestors.forEach(ancestor => {
-    const ancestorPanel = getBranchPanel(ancestor);
-    if (!ancestorPanel) return;
-    setPanelHeight(ancestorPanel, ancestorPanel.getBoundingClientRect().height);
-  });
-
-  if (opening) {
-    // Start closed at 0
-    setPanelHeight(panel, 0);
-
-    // Force layout
-    panel.offsetHeight;
-
-    // Open branch so opacity/margin styles apply and content becomes measurable
-    branch.classList.add('is-open');
-
-    const targetHeight = panel.scrollHeight;
-
-    requestAnimationFrame(() => {
-      setPanelHeight(panel, targetHeight);
-
-      ancestors.forEach(ancestor => {
-        const ancestorPanel = getBranchPanel(ancestor);
-        if (!ancestorPanel) return;
-        setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
-      });
-    });
-
-    const onEnd = (e) => {
-      if (e.propertyName !== 'height') return;
-      panel.removeEventListener('transitionend', onEnd);
-
-      resetPanelHeight(panel);
-      ancestors.forEach(ancestor => {
-        const ancestorPanel = getBranchPanel(ancestor);
-        if (ancestorPanel && ancestor.classList.contains('is-open')) {
-          resetPanelHeight(ancestorPanel);
-        }
-      });
-
-      delete branch.dataset.animating;
-    };
-
-    panel.addEventListener('transitionend', onEnd);
-  } else {
-    const currentHeight = panel.getBoundingClientRect().height;
-    setPanelHeight(panel, currentHeight);
-
-    // Force layout
-    panel.offsetHeight;
-
-    // Measure ancestors before closing so we know their current open height
+  const freezeAncestors = () => {
     ancestors.forEach(ancestor => {
       const ancestorPanel = getBranchPanel(ancestor);
       if (!ancestorPanel) return;
       setPanelHeight(ancestorPanel, ancestorPanel.getBoundingClientRect().height);
     });
+  };
 
-    // Remove open state before measuring end heights
-    branch.classList.remove('is-open');
-
-    const targetHeight = 0;
-    const ancestorTargetHeights = ancestors.map(ancestor => {
+  const resetAncestors = () => {
+    ancestors.forEach(ancestor => {
       const ancestorPanel = getBranchPanel(ancestor);
-      return ancestorPanel ? ancestorPanel.scrollHeight : 0;
+      if (!ancestorPanel) return;
+      if (ancestor.classList.contains('is-open')) {
+        resetPanelHeight(ancestorPanel);
+      } else {
+        ancestorPanel.style.height = '0px';
+      }
     });
+  };
 
-    requestAnimationFrame(() => {
-      setPanelHeight(panel, targetHeight);
+  let rafId = 0;
 
-      ancestors.forEach((ancestor, i) => {
+  if (opening) {
+    freezeAncestors();
+
+    // Keep the branch closed initially so we can animate from 0
+    branch.classList.add('is-open');
+    panel.style.height = '0px';
+
+    // Force layout with the open styles applied
+    panel.offsetHeight;
+
+    const tick = () => {
+      setPanelHeight(panel, panel.scrollHeight);
+      ancestors.forEach(ancestor => {
         const ancestorPanel = getBranchPanel(ancestor);
         if (!ancestorPanel) return;
-        setPanelHeight(ancestorPanel, ancestorTargetHeights[i]);
+        setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
       });
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(() => {
+      tick();
     });
 
     const onEnd = (e) => {
       if (e.propertyName !== 'height') return;
       panel.removeEventListener('transitionend', onEnd);
+      cancelAnimationFrame(rafId);
 
-      panel.style.height = '0px';
+      resetPanelHeight(panel);
+      resetAncestors();
+      delete branch.dataset.animating;
+    };
+
+    panel.addEventListener('transitionend', onEnd);
+  } else {
+    freezeAncestors();
+
+    setPanelHeight(panel, panel.getBoundingClientRect().height);
+
+    // Force layout
+    panel.offsetHeight;
+
+    branch.classList.remove('is-open');
+
+    const tick = () => {
+      setPanelHeight(panel, 0);
       ancestors.forEach(ancestor => {
         const ancestorPanel = getBranchPanel(ancestor);
-        if (ancestorPanel && ancestor.classList.contains('is-open')) {
-          resetPanelHeight(ancestorPanel);
-        }
+        if (!ancestorPanel) return;
+        setPanelHeight(ancestorPanel, ancestorPanel.scrollHeight);
       });
+      rafId = requestAnimationFrame(tick);
+    };
 
+    rafId = requestAnimationFrame(() => {
+      tick();
+    });
+
+    const onEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      panel.removeEventListener('transitionend', onEnd);
+      cancelAnimationFrame(rafId);
+
+      panel.style.height = '0px';
+      resetAncestors();
       delete branch.dataset.animating;
     };
 
