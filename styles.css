@@ -3,10 +3,12 @@
   --heading: #1b1f1d;
   --body: #4f5a53;
   --muted: #7a827c;
+  --nav: #7d746d;
+  --nav-active: #1b1f1d;
   --accent: #a0587c;
-  --hover: rgba(160, 88, 124, 0.035);
 
   --font: "Inter", sans-serif;
+  --font-nav: "Cormorant Garamond", serif;
 }
 
 * {
@@ -40,7 +42,7 @@ a {
 }
 
 .site-header {
-  margin-bottom: 5.5rem;
+  margin-bottom: 2rem;
 }
 
 .site-name {
@@ -50,6 +52,32 @@ a {
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
+}
+
+.site-nav {
+  display: flex;
+  gap: 1.15rem;
+  margin-bottom: 4.75rem;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  text-decoration: none;
+  color: var(--nav);
+  font-family: var(--font-nav);
+  font-size: 1.15rem;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color 0.25s ease;
+}
+
+.site-nav a:hover {
+  color: var(--heading);
+}
+
+.site-nav a.active {
+  color: var(--nav-active);
 }
 
 .intro {
@@ -99,15 +127,8 @@ a {
 
 .thought-item {
   display: block;
-  padding: 0.65rem 0.75rem;
-  margin: 0 -0.75rem;
+  padding: 0.65rem 0;
   text-decoration: none;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.thought-item:hover {
-  background: var(--hover);
 }
 
 .thought-row {
@@ -123,11 +144,17 @@ a {
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.3;
+  transition: color 0.22s ease;
 }
 
 .thought-dots {
-  border-bottom: 1px dotted rgba(27, 31, 29, 0.18);
-  transform: translateY(-0.15em);
+  height: 0.7em;
+  align-self: center;
+  background-image: radial-gradient(circle, rgba(27, 31, 29, 0.32) 1.15px, transparent 1.25px);
+  background-size: 8px 8px;
+  background-position: left center;
+  background-repeat: repeat-x;
+  transform: translateY(0.08em);
 }
 
 .thought-meta {
@@ -135,11 +162,75 @@ a {
   font-size: 0.92rem;
   font-weight: 400;
   white-space: nowrap;
-  transition: color 0.3s ease;
+  transition: color 0.28s ease;
 }
 
+.thought-item:hover .thought-title,
 .thought-item:hover .thought-meta {
   color: var(--heading);
+}
+
+.thought-tree {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.tree-node {
+  padding-left: 0;
+}
+
+.tree-group {
+  border-left: 1px solid rgba(27, 31, 29, 0.12);
+  margin-left: 0.35rem;
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.tree-toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: var(--heading);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.tree-toggle::before {
+  content: "▾";
+  color: var(--muted);
+  font-size: 0.8rem;
+  transition: transform 0.22s ease;
+}
+
+.tree-node.collapsed > .tree-toggle::before {
+  transform: rotate(-90deg);
+}
+
+.tree-label {
+  color: var(--heading);
+  font-weight: 500;
+  transition: color 0.22s ease;
+}
+
+.tree-leaf {
+  display: block;
+  text-decoration: none;
+  color: var(--body);
+  padding: 0.15rem 0;
+  transition: color 0.22s ease;
+}
+
+.tree-leaf:hover,
+.tree-toggle:hover .tree-label {
+  color: var(--heading);
+}
+
+.tree-node.collapsed > .tree-group {
+  display: none;
 }
 
 .post-page {
@@ -170,7 +261,7 @@ a {
     padding-top: 2.5rem;
   }
 
-  .site-header {
+  .site-nav {
     margin-bottom: 4rem;
   }
 
