@@ -42,18 +42,14 @@ a {
 }
 
 .page-shell {
-  width: min(900px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 2rem));
+  min-height: 100vh;
   margin: 0 auto;
   padding: 3rem 0 5rem;
   display: grid;
-  grid-template-columns: 90px minmax(0, 680px);
+  grid-template-columns: 90px minmax(0, 760px);
   column-gap: 2rem;
   align-items: start;
-}
-
-.notes-page-shell {
-  width: min(1180px, calc(100% - 2rem));
-  grid-template-columns: 90px minmax(0, 760px);
 }
 
 .side-nav {
@@ -228,6 +224,8 @@ a {
 
 .notes-branch {
   margin: 0;
+  overflow: hidden;
+  transition: height 0.42s cubic-bezier(.22, .61, .36, 1);
 }
 
 .notes-branch > summary {
@@ -268,6 +266,17 @@ a {
   margin-top: 0.5rem;
   padding-left: 1rem;
   border-left: 1px solid rgba(27, 31, 29, 0.12);
+  opacity: 0;
+  transform: translateY(-4px);
+  transform-origin: top;
+  transition:
+    opacity 0.28s cubic-bezier(.22, .61, .36, 1),
+    transform 0.28s cubic-bezier(.22, .61, .36, 1);
+}
+
+.notes-branch[open] > .notes-children {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .notes-leaf {
@@ -347,11 +356,6 @@ a {
 }
 
 @media (max-width: 980px) {
-  .notes-page-shell {
-    width: min(900px, calc(100% - 2rem));
-    grid-template-columns: 90px minmax(0, 680px);
-  }
-
   .notes-layout {
     grid-template-columns: 1fr;
   }
@@ -362,9 +366,8 @@ a {
 }
 
 @media (max-width: 800px) {
-  .page-shell,
-  .notes-page-shell {
-    width: min(680px, calc(100% - 1.5rem));
+  .page-shell {
+    width: min(760px, calc(100% - 1.5rem));
     grid-template-columns: 1fr;
     row-gap: 1.5rem;
     padding-top: 2.5rem;
