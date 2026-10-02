@@ -15,35 +15,36 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page">
-    <header class="site-header">
-      <a class="site-name" href="/">Logan Hartmann</a>
-    </header>
+  <div class="page-shell">
+    <aside class="side-nav">
+      <a class="side-link" href="notes.html" data-nav="notes">Notes</a>
+      <a class="side-link" href="essays.html" data-nav="essays">Essays</a>
+    </aside>
 
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="thoughts.html" data-nav="thoughts">Notes</a>
-      <a href="posts.html" data-nav="writing">Essays</a>
-      <a href="photos.html" data-nav="photos">Photos</a>
-    </nav>
+    <div class="page">
+      <header class="site-header">
+        <a class="site-name" href="/">Logan Hartmann</a>
+      </header>
 
-    <main>
-      <section class="section intro">
-        <div class="section-head">
-          <h2>About</h2>
-        </div>
+      <main>
+        <section class="section intro">
+          <div class="section-head">
+            <h2>About</h2>
+          </div>
 
-        <p class="intro-line">I like Texas and thinking about things.</p>
-      </section>
+          <p class="intro-line">I like Texas and thinking about things.</p>
+        </section>
 
-      <section class="section" id="writing">
-        <div class="section-head">
-          <h2>Recent Essays</h2>
-          <a href="posts.html">View all essays</a>
-        </div>
+        <section class="section">
+          <div class="section-head">
+            <h2>Recent Essays</h2>
+            <a href="essays.html">View all essays</a>
+          </div>
 
-        <div class="thought-list" id="posts"></div>
-      </section>
-    </main>
+          <div class="essay-list" id="recent-essays"></div>
+        </section>
+      </main>
+    </div>
   </div>
 
   <script src="script.js"></script>
